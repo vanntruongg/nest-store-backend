@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/../nst-store-auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../nst-store-cart-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../nst-store-email-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../nst-store-eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/../nst-store-order-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../nst-store-product-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../nst-store-user-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../cart-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../email-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../eureka-server/pom.xml" />
+        <option value="$PROJECT_DIR$/../order-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../product-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../user-service/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/../auth-service/authservice-aclient/pom.xml" />
+        <option value="$PROJECT_DIR$/../auth-service/authservice-client/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="19" project-jdk-type="JavaSDK" />
+</project>

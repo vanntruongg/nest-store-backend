@@ -1,0 +1,25 @@
+#server:
+#  port: 8082
+# kafka server
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+      auto-offset-reset: earliest
+
+  # Email server config
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    username: vantruong.ct263ctu@gmail.com
+    # https://myaccount.google.com/u/1/apppasswords
+    password: ymwuovhcpviucpjn
+    port: 587
+    protocol: smtp
+    test-connection: false
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls.enable: true
