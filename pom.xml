@@ -23,7 +23,7 @@
 	<modules>
 		<module>eureka-server</module>
 		<module>api-gateway</module>
-		<module>auth-service</module>
+		<module>identity-service</module>
 		<module>user-service</module>
 		<module>product-service</module>
 		<module>order-service</module>

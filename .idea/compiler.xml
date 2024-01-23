@@ -8,13 +8,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="cart-service" />
-        <module name="auth-service" />
         <module name="email-service" />
         <module name="api-gateway" />
         <module name="product-service" />
         <module name="order-service" />
         <module name="user-service" />
         <module name="eureka-server" />
+        <module name="identity-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -27,11 +27,11 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="api-gateway" options="-parameters" />
-      <module name="auth-service" options="-parameters" />
       <module name="cart-service" options="-parameters" />
       <module name="client" options="-parameters" />
       <module name="email-service" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="identity-service" options="-parameters" />
       <module name="nest-store-microservices" options="" />
       <module name="order-service" options="-parameters" />
       <module name="product-service" options="-parameters" />
