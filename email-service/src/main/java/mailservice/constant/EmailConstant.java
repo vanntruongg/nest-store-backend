@@ -1,4 +1,4 @@
-package vantruong.nststore.constant;
+package mailservice.constant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

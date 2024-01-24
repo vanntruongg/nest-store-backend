@@ -3,6 +3,7 @@ package authservice.entity;
 import authservice.enums.AccountStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -20,6 +21,7 @@ import java.util.List;
 @Document(collection = "User")
 public class User {
   @Id
+  private ObjectId id;
   @Indexed(unique = true)
   private String email;
   private String firstName;
@@ -32,11 +34,14 @@ public class User {
   private List<String> roles;
   private List<Token> tokens;
 
+  @Builder.Default
   @CreatedDate
   @JsonIgnore
   private LocalDateTime createdDate = LocalDateTime.now();
 
+  @Builder.Default
   @LastModifiedDate
   @JsonIgnore
   private LocalDateTime modifiedDate = LocalDateTime.now();
+
 }

@@ -23,9 +23,9 @@
 	<modules>
 		<module>eureka-server</module>
 		<module>api-gateway</module>
-		<module>identity-service</module>
 		<module>user-service</module>
 		<module>product-service</module>
+		<module>identity-service</module>
 		<module>order-service</module>
 		<module>cart-service</module>
 		<module>email-service</module>

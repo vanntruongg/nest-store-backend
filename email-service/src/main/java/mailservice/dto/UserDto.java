@@ -1,4 +1,4 @@
-package vantruong.nststore.dto;
+package mailservice.dto;
 
 import lombok.Getter;
 

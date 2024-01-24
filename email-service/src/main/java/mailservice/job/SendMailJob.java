@@ -1,11 +1,11 @@
-package vantruong.nststore.job;
+package mailservice.job;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import vantruong.nststore.constant.EmailConstant;
+import mailservice.constant.EmailConstant;
 
 @AllArgsConstructor
 public class SendMailJob extends Thread {

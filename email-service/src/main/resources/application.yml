@@ -1,13 +1,6 @@
-#server:
-#  port: 8082
-# kafka server
+server:
+  port: 9002
 spring:
-  kafka:
-    bootstrap-servers: localhost:9092
-    consumer:
-      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
-      auto-offset-reset: earliest
-
   # Email server config
   mail:
     default-encoding: UTF-8
