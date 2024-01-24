@@ -8,8 +8,15 @@ import java.time.LocalDateTime;
 
 public class Utils {
 
+  private static String generateRandomString() {
+    int length = 24;
+    boolean useLetters = true;
+    boolean useNumbers = true;
+    return RandomStringUtils.random(length, useLetters, useNumbers);
+  }
+
   public static Token generateTokenVerify() {
-    String randomToken = RandomStringUtils.random(32);
+    String randomToken = generateRandomString();
     LocalDateTime expiredDate = LocalDateTime.now().plusDays(1);
     return Token.builder()
             .tokenType(TokenType.VERIFICATION.getTokenType())

@@ -1,7 +1,8 @@
 package authservice.service;
 
+import authservice.entity.User;
+import authservice.entity.dto.RefreshTokenRequest;
 import authservice.entity.dto.UserCredentialDto;
-import authservice.entity.dto.VerifyEmailRequest;
 import authservice.entity.dto.LoginRequest;
 import authservice.entity.dto.LoginResponse;
 
@@ -11,5 +12,9 @@ public interface IdentityService {
 
   LoginResponse login(LoginRequest request);
 
-  Boolean verifyEmail(VerifyEmailRequest request);
+  void sendVerificationEmail(User user, String token);
+
+  Boolean processVerifyEmail(String token);
+
+  LoginResponse refreshToken(RefreshTokenRequest request);
 }

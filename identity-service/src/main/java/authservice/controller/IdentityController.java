@@ -1,13 +1,16 @@
 package authservice.controller;
 
+import authservice.entity.dto.RefreshTokenRequest;
 import authservice.entity.dto.UserCredentialDto;
 import authservice.common.CommonResponse;
 import authservice.constant.MessageConstant;
 import authservice.entity.dto.LoginRequest;
-import authservice.entity.dto.VerifyEmailRequest;
 import authservice.service.IdentityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import static authservice.constant.ApiEndpoint.*;
@@ -24,7 +27,7 @@ public class IdentityController {
   public ResponseEntity<CommonResponse<Object>> addNewUser(@RequestBody UserCredentialDto userDto) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
-            .message(MessageConstant.LOGIN_SUCCESS)
+            .message(MessageConstant.REGISTER_SUCCESS)
             .data(authService.register(userDto))
             .build());
   }
@@ -38,13 +41,24 @@ public class IdentityController {
             .build());
   }
 
-  @PostMapping("/verify-email")
-  public ResponseEntity<CommonResponse<Object>> verifyEmail(@RequestBody VerifyEmailRequest request) {
+  @PostMapping(VERIFY_EMAIL)
+  public ResponseEntity<CommonResponse<Object>> verifyEmail(@RequestParam(value = "token") String token) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.LOGIN_SUCCESS)
-            .data(authService.verifyEmail(request))
+            .data(authService.processVerifyEmail(token))
             .build());
+  }
+
+  @PostMapping(REFRESH_TOKEN)
+  public ResponseEntity<CommonResponse<Object>> refreshToken(@RequestBody @Valid RefreshTokenRequest request) {
+    try {
+      return ResponseEntity.ok().body(CommonResponse.builder()
+              .isSuccess(true).data(authService.refreshToken(request)).build());
+    } catch (BadCredentialsException ex) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CommonResponse.builder()
+              .isSuccess(false).message(MessageConstant.REFRESH_TOKEN_FAIL).build());
+    }
   }
 
 }

@@ -11,4 +11,6 @@ public interface UserCredentialRepository extends MongoRepository<User, Integer>
   Optional<User> findByEmail(String email);
   Boolean existsByEmail(String email);
 
+  Optional<User> findByTokens_TokenValue(String tokenValue);
+
 }

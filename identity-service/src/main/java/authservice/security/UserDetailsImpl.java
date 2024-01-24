@@ -20,8 +20,8 @@ public class UserDetailsImpl implements UserDetails {
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     List<SimpleGrantedAuthority> simpleGrantedAuthorityList = new ArrayList<>();
-    for (Role role : user.getRoles()) {
-      simpleGrantedAuthorityList.add(new SimpleGrantedAuthority(role.getRoleName()));
+    for (String role : user.getRoles()) {
+      simpleGrantedAuthorityList.add(new SimpleGrantedAuthority(role));
     }
     return simpleGrantedAuthorityList;
   }
@@ -34,6 +34,10 @@ public class UserDetailsImpl implements UserDetails {
   @Override
   public String getUsername() {
     return user.getEmail();
+  }
+
+  public Boolean isVerified() {
+    return user.isVerify();
   }
 
   @Override

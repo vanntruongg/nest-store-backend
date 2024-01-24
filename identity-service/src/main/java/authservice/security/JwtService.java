@@ -27,7 +27,7 @@ public class JwtService {
   }
 
   public String generateAccessToken(UserDetailsImpl userDetails) {
-    List<String> roles = convertRolesToString(userDetails.getUser().getRoles());
+    List<String> roles = userDetails.getUser().getRoles();
     return Jwts.builder()
             .setSubject(userDetails.getUsername())
             .claim("email", userDetails.getUsername())
@@ -70,11 +70,5 @@ public class JwtService {
       log.error("JWT claims string is empty: {}", ex.getMessage());
     }
     return false;
-  }
-
-  private List<String> convertRolesToString(List<Role> roles) {
-    return roles.stream()
-            .map(Role::getRoleName)
-            .collect(Collectors.toList());
   }
 }

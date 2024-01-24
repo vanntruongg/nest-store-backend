@@ -1,6 +1,5 @@
 package authservice.entity.dto;
 
-import authservice.entity.Token;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,5 +10,5 @@ import lombok.Setter;
 public class SendMailVerifyUserRequest {
   private String email;
   private String name;
-  private Token token;
+  private String token;
 }

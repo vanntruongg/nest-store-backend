@@ -8,23 +8,22 @@ import authservice.entity.User;
 import authservice.entity.dto.*;
 import authservice.enums.AccountStatus;
 import authservice.enums.TokenType;
-import authservice.exception.DuplicationException;
-import authservice.exception.ErrorCode;
-import authservice.exception.ExpiredException;
-import authservice.exception.NotFoundException;
-import authservice.feign.MailClient;
+import authservice.exception.*;
 import authservice.repository.UserCredentialRepository;
 import authservice.security.JwtService;
 import authservice.security.UserDetailsImpl;
+import authservice.security.UserDetailsServiceImpl;
 import authservice.service.IdentityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.Iterator;
@@ -39,15 +38,21 @@ public class IdentityServiceImpl implements IdentityService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
-  private final MailClient mailClient;
+  private final UserDetailsServiceImpl userDetailsService;
+  //  private final MailClient mailClient;
+  private final RestTemplate restTemplate;
 
   @Override
   public LoginResponse login(LoginRequest request) {
     var authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
     );
-    SecurityContextHolder.getContext().setAuthentication(authentication);
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    if (!userDetails.isVerified()) {
+      throw new UnVerifiedAccountException(ErrorCode.DENIED, MessageConstant.UNVERIFIED_ACCOUNT);
+    }
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
 
     String accessToken = jwtService.generateAccessToken(userDetails);
     String refreshToken = jwtService.generateRefreshToken(userDetails);
@@ -79,14 +84,7 @@ public class IdentityServiceImpl implements IdentityService {
               .build();
 
       repository.save(newUser);
-
-      SendMailVerifyUserRequest request = SendMailVerifyUserRequest.builder()
-              .email(newUser.getEmail())
-              .name(newUser.getFirstName())
-              .token(tokenVerifyUser)
-              .build();
-
-      mailClient.senMailVerifyUser(request);
+      sendVerificationEmail(newUser, tokenVerifyUser.getTokenValue());
       return true;
     } catch (DuplicationException ex) {
       log.error("Error during user registration: {}", ex.getMessage(), ex);
@@ -95,8 +93,19 @@ public class IdentityServiceImpl implements IdentityService {
   }
 
   @Override
-  public Boolean verifyEmail(VerifyEmailRequest request) {
-    User user = repository.findByEmail(request.getEmail())
+  public void sendVerificationEmail(User user, String token) {
+    SendMailVerifyUserRequest request = SendMailVerifyUserRequest.builder()
+            .email(user.getEmail())
+            .name(user.getFirstName())
+            .token(token)
+            .build();
+    restTemplate.postForLocation("http://localhost:9002/mail/verify", request);
+//    mailClient.senMailVerifyUser(request);
+  }
+
+  @Override
+  public Boolean processVerifyEmail(String tokenValue) {
+    User user = repository.findByTokens_TokenValue(tokenValue)
             .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.USER_NOT_FOUND));
 
     List<Token> tokens = user.getTokens();
@@ -108,6 +117,7 @@ public class IdentityServiceImpl implements IdentityService {
       if (TokenType.VERIFICATION.getTokenType().equals(token.getTokenType())) {
         if (LocalDateTime.now().isBefore(token.getExpiredDate())) {
           user.setVerify(true);
+          user.setStatus(AccountStatus.ACTIVE);
           iterator.remove();
           tokenFound = true;
         } else {
@@ -124,6 +134,23 @@ public class IdentityServiceImpl implements IdentityService {
     user.setTokens(tokens);
     repository.save(user);
     return true;
+  }
+
+  @Override
+  public LoginResponse refreshToken(RefreshTokenRequest request) {
+    String token = request.getRefreshToken();
+
+    if (!jwtService.validateToken(token)) {
+      throw new BadCredentialsException("Invalid refresh token!");
+    }
+    String email = jwtService.getEmailFromToken(token);
+    UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(email);
+
+    String accessToken = jwtService.generateAccessToken(userDetails);
+
+    return LoginResponse.builder()
+            .accessToken(accessToken)
+            .build();
   }
 
 }
