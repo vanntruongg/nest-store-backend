@@ -42,6 +42,7 @@ public class IdentityServiceImpl implements IdentityService {
   //  private final MailClient mailClient;
   private final RestTemplate restTemplate;
 
+
   @Override
   public LoginResponse login(LoginRequest request) {
     var authentication = authenticationManager.authenticate(
@@ -64,7 +65,7 @@ public class IdentityServiceImpl implements IdentityService {
 
   @Override
   @Transactional
-  public Boolean register(UserCredentialDto userDto) {
+  public Boolean register(RegisterRequest userDto) {
     try {
       if (repository.existsByEmail(userDto.getEmail())) {
         throw new DuplicationException(ErrorCode.NOT_NULL, MessageConstant.EMAIL_EXISTED);
@@ -100,7 +101,6 @@ public class IdentityServiceImpl implements IdentityService {
             .token(token)
             .build();
     restTemplate.postForLocation("http://localhost:9002/mail/verify", request);
-//    mailClient.senMailVerifyUser(request);
   }
 
   @Override
@@ -151,6 +151,53 @@ public class IdentityServiceImpl implements IdentityService {
     return LoginResponse.builder()
             .accessToken(accessToken)
             .build();
+  }
+
+  @Override
+  public List<User> getAllUser() {
+    return repository.findAll();
+  }
+
+  @Override
+  public User getUserByEmail(String email) {
+    return repository.findByEmail(email).orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.USER_NOT_FOUND));
+  }
+
+  @Override
+  @Transactional
+  public Boolean updateUser(UserDto userDto) {
+    User user = getUserByEmail(userDto.getEmail());
+
+    user.setFirstName(userDto.getFirstName());
+    user.setLastName(userDto.getLastName());
+    user.setAddress(userDto.getAddress());
+    user.setPhone(userDto.getPhone());
+    user.setImageUrl(user.getImageUrl());
+
+    repository.save(user);
+    return true;
+  }
+
+  @Override
+  @Transactional
+  public Boolean changePassword(ChangePasswordRequest changePasswordRequest) {
+    User user = getUserByEmail(changePasswordRequest.getEmail());
+
+    if (passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())) {
+      user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+      repository.save(user);
+      return true;
+    } else {
+      throw new OldPasswordNotMatches(ErrorCode.DENIED, MessageConstant.OLD_PASSWORD_NOT_MATCHES);
+    }
+  }
+
+  @Override
+  public Boolean deleteUser(String email) {
+    User user = getUserByEmail(email);
+    user.setStatus(AccountStatus.DELETED);
+    repository.save(user);
+    return true;
   }
 
 }

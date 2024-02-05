@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 
 @Getter
-public class UserCredentialDto {
+public class RegisterRequest {
   @NotEmpty
   private String firstName;
   @NotEmpty

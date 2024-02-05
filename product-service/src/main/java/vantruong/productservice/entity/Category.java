@@ -1,7 +1,10 @@
 package vantruong.productservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -9,15 +12,20 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "category")
-public class Category extends BaseEntity{
+@Table(name = "categories")
+public class Category extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "c_id")
+  @Column(name = "cat_id")
   private int id;
 
-  @Column(name = "c_name")
+  @Column(name = "cat_name")
   private String name;
+
+  @ManyToOne
+  @JoinColumn(name = "parent_cat_id")
+  @JsonIgnore
+  private Category parentCategory;
 
 }

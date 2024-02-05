@@ -1,21 +1,21 @@
-package nststore.userservice.exception;
+package authservice.exception;
 
-public class DuplicateException extends RuntimeException {
+public class OldPasswordNotMatches extends RuntimeException {
   private final transient ErrorDetail errorDetail;
 
-  public DuplicateException(int errorCode, String message) {
+  public OldPasswordNotMatches(int errorCode, String message) {
     super(message);
     this.errorDetail = ErrorDetail.builder()
             .errorCode(errorCode)
-            .message(message)
+            .errorMessage(message)
             .build();
   }
 
-  public DuplicateException(int errorCode, String message, Throwable cause) {
+  public OldPasswordNotMatches(int errorCode, String message, Throwable cause) {
     super(message, cause);
     this.errorDetail = ErrorDetail.builder()
             .errorCode(errorCode)
-            .message(message)
+            .errorMessage(message)
             .build();
   }
 }

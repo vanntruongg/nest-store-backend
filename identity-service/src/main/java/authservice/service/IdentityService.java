@@ -1,14 +1,13 @@
 package authservice.service;
 
 import authservice.entity.User;
-import authservice.entity.dto.RefreshTokenRequest;
-import authservice.entity.dto.UserCredentialDto;
-import authservice.entity.dto.LoginRequest;
-import authservice.entity.dto.LoginResponse;
+import authservice.entity.dto.*;
+
+import java.util.List;
 
 public interface IdentityService {
 
-  Boolean register(UserCredentialDto userDto);
+  Boolean register(RegisterRequest userDto);
 
   LoginResponse login(LoginRequest request);
 
@@ -17,4 +16,14 @@ public interface IdentityService {
   Boolean processVerifyEmail(String token);
 
   LoginResponse refreshToken(RefreshTokenRequest request);
+
+  List<User> getAllUser();
+
+  User getUserByEmail(String email);
+
+  Boolean updateUser(UserDto userDto);
+
+  Boolean changePassword(ChangePasswordRequest changePasswordRequest);
+
+  Boolean deleteUser(String email);
 }

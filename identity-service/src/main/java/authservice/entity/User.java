@@ -28,20 +28,13 @@ public class User {
   private String lastName;
   private String phone;
   private String address;
-  private String password;
+  private String imageUrl;
   private boolean isVerify;
   private AccountStatus status;
   private List<String> roles;
+  @JsonIgnore
   private List<Token> tokens;
-
-  @Builder.Default
-  @CreatedDate
   @JsonIgnore
-  private LocalDateTime createdDate = LocalDateTime.now();
-
-  @Builder.Default
-  @LastModifiedDate
-  @JsonIgnore
-  private LocalDateTime modifiedDate = LocalDateTime.now();
+  private String password;
 
 }

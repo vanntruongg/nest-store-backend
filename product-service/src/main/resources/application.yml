@@ -1,11 +1,11 @@
 # PRODUCT-SERVICE
 server:
-  port: 9003
+  port: 9002
 spring:
   application:
     name: product-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/nst-store-ProductDB
+    url: jdbc:postgresql://localhost:5432/NEST-Store-ProductDB
     username: vantruong
     password: vantruong
     driver-class-name: org.postgresql.Driver

@@ -6,7 +6,7 @@ spring:
   application:
     name: order-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/nst-store-UserDB
+    url: jdbc:postgresql://localhost:5432/NEST-Store-OrderDB
     username: vantruong
     password: vantruong
     driver-class-name: org.postgresql.Driver

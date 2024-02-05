@@ -5,13 +5,13 @@ server:
 spring:
   data:
     mongodb:
-      database: NST-Shop-IdentityDB
+      database: NEST-Store-IdentityDB
       host: localhost
       port: 27017
   application:
-    name: auth-service
-  kafka:
-    bootstrap-servers: localhost:9092
+    name: identity-service
+#  kafka:
+#    bootstrap-servers: localhost:9092
 
 eureka:
   client:

@@ -19,11 +19,11 @@ spring:
           filters:
             - AuthenticationFilter
         - id: product-service-route
-          uri: ${PRODUCT_ROUTE_URI:http://localhost:9003}
+          uri: ${PRODUCT_ROUTE_URI:http://localhost:9002}
           predicates:
             - Path=/product/**
           filters:
-            - AuthenticationFilter
+            - RewritePath=/product(?<remaining>.*), ${remaining}
 eureka:
   client:
     service-url:
