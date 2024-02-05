@@ -1,0 +1,16 @@
+# USER-SERVICE
+server:
+  port: 9003
+spring:
+  application:
+    name: inventory-service
+  data:
+    mongodb:
+      database: NEST-Store-InventoryDB
+      host: localhost
+      port: 27017
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
