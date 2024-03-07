@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vantruong.nststore.common.CommonResponse;
+import vantruong.nststore.constant.MessageConstant;
 import vantruong.nststore.dto.CartItemDto;
+import vantruong.nststore.dto.UpdateQuantityRequest;
 import vantruong.nststore.service.CartService;
 
 import static vantruong.nststore.constant.ApiEndpoint.*;
@@ -20,7 +22,7 @@ public class CartController {
   public ResponseEntity<CommonResponse<Object>> getAll(@PathVariable("email") String email) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
-            .message("Find successfully!")
+            .message(MessageConstant.FIND_SUCCESS)
             .data(cartService.getItems(email))
             .build());
   }
@@ -40,6 +42,15 @@ public class CartController {
             .isSuccess(true)
             .message("Find successfully!")
             .data(cartService.removeFromCart(email, productId))
+            .build());
+  }
+
+  @PostMapping
+  public ResponseEntity<CommonResponse<Object>> updateQuantity(@RequestBody UpdateQuantityRequest request) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.UPDATE_SUCCESS)
+            .data(cartService.updateQuantity(request))
             .build());
   }
 }

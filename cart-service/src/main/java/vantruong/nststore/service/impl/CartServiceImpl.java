@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vantruong.nststore.dto.CartItemDto;
+import vantruong.nststore.dto.UpdateQuantityRequest;
 import vantruong.nststore.entity.CartItem;
 import vantruong.nststore.entity.Item;
 import vantruong.nststore.service.CartService;
@@ -67,9 +68,21 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
-  public Object getItems(String emailUser) {
+  public CartItem getItems(String emailUser) {
     String cartKey = getKey(emailUser);
     return redisService.get(cartKey);
+  }
+
+  @Override
+  public Boolean updateQuantity(UpdateQuantityRequest request) {
+    CartItem cartItem = getItems(request.getEmail());
+    for (Item item : cartItem.getItems()) {
+      if (item.getItemId() == request.getItemId()) {
+        item.setQuantity(request.getQuantity());
+        return true;
+      }
+    }
+    return false;
   }
 
   private String getKey(String emailUser) {
