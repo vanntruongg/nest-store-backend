@@ -1,5 +1,6 @@
 package vantruong.productservice.controller;
 
+import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,15 @@ public class ProductController {
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
             .data(productService.getAllProductByCategoryId(id))
+            .build());
+  }
+
+  @GetMapping("")
+  public ResponseEntity<CommonResponse<Object>> getProductByName(@PathVariable("name") String name) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+                    .isSuccess(true)
+                    .message(MessageConstant.FIND_SUCCESS)
+                    .data(productService.findProductByName(name))
             .build());
   }
 

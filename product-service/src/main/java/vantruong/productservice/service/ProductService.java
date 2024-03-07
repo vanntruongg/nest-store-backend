@@ -14,4 +14,6 @@ public interface ProductService {
   List<Product> getAllProductByCategoryId(int id);
 
   Product createProduct(ProductDto productDto);
+
+  List<Product> findProductByName(String name);
 }

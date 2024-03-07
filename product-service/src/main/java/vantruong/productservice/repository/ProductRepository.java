@@ -1,5 +1,6 @@
 package vantruong.productservice.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -13,4 +14,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Integer>, PagingAndSortingRepository<Product, Integer> {
  @Query("select p from Product p where p.category.id = :id")
   List<Product> findAllByCategoryId(int id);
+
+  List<Product> findProductByNameLike(String name);
 }
