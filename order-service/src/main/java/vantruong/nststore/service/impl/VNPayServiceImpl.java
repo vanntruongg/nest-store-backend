@@ -14,11 +14,10 @@ import java.util.*;
 public class VNPayServiceImpl implements PaymentService {
 
   @Override
-  public String createUrlPaymentOrder() throws UnsupportedEncodingException {
+  public String createUrlPaymentOrder(long amount) throws UnsupportedEncodingException {
     String vnp_Version = "2.1.0";
     String vnp_Command = "pay";
     String orderType = "other";
-//    long amount = Integer.parseInt(paymentRequest.getAmount());
 
     String vnp_TxnRef = VNPayConfig.getRandomNumber(8);
     String vnp_IpAddr = VNPayConfig.getIpAddress();
@@ -29,12 +28,12 @@ public class VNPayServiceImpl implements PaymentService {
     vnp_Params.put("vnp_Version", vnp_Version);
     vnp_Params.put("vnp_Command", vnp_Command);
     vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-//    vnp_Params.put("vnp_Amount", String.valueOf(amount * 100));
+    vnp_Params.put("vnp_Amount", String.valueOf(amount * 100));
     vnp_Params.put("vnp_CurrCode", "VND");
     vnp_Params.put("vnp_BankCode", "NCB");
 
     vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-    vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+    vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang: " + vnp_TxnRef);
     vnp_Params.put("vnp_OrderType", orderType);
     vnp_Params.put("vnp_Locale", "vn");
 
