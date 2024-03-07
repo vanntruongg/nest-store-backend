@@ -24,6 +24,12 @@ spring:
             - Path=/product/**
           filters:
             - RewritePath=/product(?<remaining>.*), ${remaining}
+        - id: order-service-route
+          uri: ${ORDER_ROUTE_URI:http://localhost:9005}
+          predicates:
+            - Path=/order/**
+          filters:
+            - RewritePath=/order(?<remaining>.*), ${remaining}
 eureka:
   client:
     service-url:
