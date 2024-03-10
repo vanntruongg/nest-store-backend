@@ -13,6 +13,7 @@ public class MessageConstant {
 
 //  actions
   public static final String FIND = "Find";
+  public static final String UPDATE = "Update";
 
 //  status
   public static final String NOT_FOUND = "not found!";
@@ -23,4 +24,6 @@ public class MessageConstant {
 
   public static final String USER_NOT_FOUND = String.format(CHAR_SEQUENCE_2, USER, NOT_FOUND);
   public static final String EMAIL_EXISTED = "Email was existed!";
+  public static final String FIND_SUCCESS = String.format(CHAR_SEQUENCE_2, FIND, SUCCESS);
+  public static final String UPDATE_SUCCESS = String.format(CHAR_SEQUENCE_2, UPDATE, SUCCESS);
 }
