@@ -23,10 +23,6 @@ public class Payment extends BaseEntity {
   @Column(name = "p_description")
   private String paymentDescription;
 
-  @OneToOne
-  @JoinColumn(name = "o_id", referencedColumnName = "o_id")
-  private Order order;
-
   @ManyToOne
   @JoinColumn(name = "pm_id", referencedColumnName = "pm_id")
   private PaymentMethod paymentMethod;

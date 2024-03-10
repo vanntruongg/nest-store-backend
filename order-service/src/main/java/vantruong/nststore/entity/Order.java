@@ -32,4 +32,7 @@ public class Order extends BaseEntity {
   @Column(name = "o_status")
   private OrderStatus orderStatus;
 
+  @ManyToOne
+  @JoinColumn(name = "p_id", referencedColumnName = "p_id")
+  private Payment payment;
 }

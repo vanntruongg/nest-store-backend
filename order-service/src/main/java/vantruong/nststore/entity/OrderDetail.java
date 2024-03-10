@@ -16,11 +16,11 @@ public class OrderDetail extends BaseEntity {
   @Column(name = "od_id")
   private int orderDetailId;
 
-  @Column(name = "od_quantity")
-  private int quantity;
-
   @Column(name = "product_id")
   private int productId;
+
+  @Column(name = "od_quantity")
+  private int quantity;
 
   @Column(name = "product_name")
   private String productName;
@@ -29,6 +29,6 @@ public class OrderDetail extends BaseEntity {
   private double productPrice;
 
   @ManyToOne
-  @JoinColumn(name = "o_id", referencedColumnName = "orderId")
+  @JoinColumn(name = "o_id", referencedColumnName = "o_id")
   private Order order;
 }
