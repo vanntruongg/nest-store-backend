@@ -36,6 +36,10 @@ public class UserDetailsImpl implements UserDetails {
     return user.getEmail();
   }
 
+  public List<String> getRole() {
+    return user.getRoles();
+  }
+
   public Boolean isVerified() {
     return user.isVerify();
   }
