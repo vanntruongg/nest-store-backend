@@ -26,4 +26,10 @@ public interface IdentityService {
   Boolean changePassword(ChangePasswordRequest changePasswordRequest);
 
   Boolean deleteUser(String email);
+
+  User getProfile();
+
+  Boolean addPhoneNumber(String phone);
+
+  Boolean addAddress(String address);
 }

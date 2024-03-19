@@ -1,8 +1,8 @@
 package authservice.controller;
 
-import authservice.entity.dto.*;
 import authservice.common.CommonResponse;
 import authservice.constant.MessageConstant;
+import authservice.entity.dto.*;
 import authservice.service.IdentityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +68,7 @@ public class IdentityController {
             .build());
   }
 
-  @GetMapping(USER_GET_BY_EMAIL)
+  @GetMapping(USER_GET)
   public ResponseEntity<CommonResponse<Object>> getUserByEmail(@PathVariable("email") String email) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
@@ -77,12 +77,40 @@ public class IdentityController {
             .build());
   }
 
+  @GetMapping(GET_PROFILE)
+  public ResponseEntity<CommonResponse<Object>> getProfile() {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(identityService.getProfile())
+            .build());
+  }
+
+
   @PostMapping(UPDATE_USER)
   public ResponseEntity<CommonResponse<Object>> updateUser(@RequestBody UserDto userDto) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.UPDATE_USER_SUCCESS)
             .data(identityService.updateUser(userDto))
+            .build());
+  }
+
+  @PostMapping(UPDATE_PHONE)
+  public ResponseEntity<CommonResponse<Object>> addPhoneNumber(@PathVariable("phone") String phone) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.UPDATE_USER_SUCCESS)
+            .data(identityService.addPhoneNumber(phone))
+            .build());
+  }
+
+  @PostMapping(UPDATE_ADDRESS)
+  public ResponseEntity<CommonResponse<Object>> addAddress(@PathVariable("address") String address) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.UPDATE_USER_SUCCESS)
+            .data(identityService.addAddress(address))
             .build());
   }
 
@@ -96,14 +124,13 @@ public class IdentityController {
   }
 
   @PostMapping(DELETE_USER)
-  public ResponseEntity<CommonResponse<Object>> deleteUser(@RequestParam String email) {
+  public ResponseEntity<CommonResponse<Object>> deleteUser(@PathVariable("email") String email) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.DELETE_USER_SUCCESS)
             .data(identityService.deleteUser(email))
             .build());
   }
-
 
 
 }

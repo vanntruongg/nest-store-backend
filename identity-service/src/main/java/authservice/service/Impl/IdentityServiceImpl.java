@@ -11,6 +11,7 @@ import authservice.enums.TokenType;
 import authservice.exception.*;
 import authservice.repository.UserCredentialRepository;
 import authservice.security.JwtService;
+import authservice.security.SecurityContextHelper;
 import authservice.security.UserDetailsImpl;
 import authservice.security.UserDetailsServiceImpl;
 import authservice.service.IdentityService;
@@ -39,6 +40,7 @@ public class IdentityServiceImpl implements IdentityService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final UserDetailsServiceImpl userDetailsService;
+  private final SecurityContextHelper securityContextHelper;
   //  private final MailClient mailClient;
   private final RestTemplate restTemplate;
 
@@ -196,6 +198,30 @@ public class IdentityServiceImpl implements IdentityService {
   public Boolean deleteUser(String email) {
     User user = getUserByEmail(email);
     user.setStatus(AccountStatus.DELETED);
+    repository.save(user);
+    return true;
+  }
+
+  @Override
+  public User getProfile() {
+    String email = securityContextHelper.getUserId();
+    return getUserByEmail(email);
+  }
+
+  @Override
+  public Boolean addPhoneNumber(String phone) {
+    String email = securityContextHelper.getUserId();
+    User user = getUserByEmail(email);
+    user.setPhone(phone);
+    repository.save(user);
+    return true;
+  }
+
+  @Override
+  public Boolean addAddress(String address) {
+    String email = securityContextHelper.getUserId();
+    User user = getUserByEmail(email);
+    user.setAddress(address);
     repository.save(user);
     return true;
   }
