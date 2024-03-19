@@ -56,4 +56,24 @@ public class OrderServiceImpl implements OrderService {
 
     return true;
   }
+
+  @Override
+  public List<Order> getOrderByStatus(String status) {
+    try {
+      OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
+      return orderRepository.findOrderByOrderStatus(orderStatus);
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("Invalid order status: " + status);
+    }
+  }
+
+  @Override
+  public List<Order> getOrderByEmailAndStatus(String email, String status) {
+    try {
+      OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
+      return orderRepository.findOrderByEmailAndOrderStatus(email, orderStatus);
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("Invalid order status: " + status);
+    }
+  }
 }

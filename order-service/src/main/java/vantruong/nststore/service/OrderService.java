@@ -9,4 +9,7 @@ public interface OrderService {
   List<Order> getAllOrder();
 
   Boolean createOrder(OrderRequest orderRequest);
+
+  List<Order> getOrderByStatus(String status);
+  List<Order> getOrderByEmailAndStatus(String email, String status);
 }

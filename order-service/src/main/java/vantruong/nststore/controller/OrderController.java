@@ -2,10 +2,7 @@ package vantruong.nststore.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vantruong.nststore.common.CommonResponse;
 import vantruong.nststore.constant.MessageConstant;
 import vantruong.nststore.entity.dto.OrderRequest;
@@ -31,6 +28,15 @@ public class OrderController {
             .isSuccess(true)
             .message(MessageConstant.ORDER_SUCCESS)
             .data(orderService.createOrder(orderRequest))
+            .build());
+  }
+
+  @GetMapping("")
+  public ResponseEntity<CommonResponse<Object>> getOrderByStatus(@RequestParam("status") String status) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+                    .isSuccess(true)
+                    .message(MessageConstant.FIND_SUCCESS)
+                    .data(orderService.getOrderByStatus(status))
             .build());
   }
 }

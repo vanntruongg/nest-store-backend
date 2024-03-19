@@ -1,6 +1,7 @@
 package vantruong.nststore.service;
 
 import vantruong.nststore.dto.CartItemDto;
+import vantruong.nststore.dto.RequestOrder;
 import vantruong.nststore.dto.UpdateQuantityRequest;
 
 public interface CartService {
@@ -11,4 +12,6 @@ public interface CartService {
   Object getItems(String emailUser);
 
   Boolean updateQuantity(UpdateQuantityRequest request);
+
+  Boolean requestOrder(RequestOrder requestOrder);
 }

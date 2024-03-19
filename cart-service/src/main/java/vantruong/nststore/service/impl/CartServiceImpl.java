@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vantruong.nststore.dto.CartItemDto;
+import vantruong.nststore.dto.RequestOrder;
 import vantruong.nststore.dto.UpdateQuantityRequest;
 import vantruong.nststore.entity.CartItem;
 import vantruong.nststore.entity.Item;
@@ -83,6 +84,11 @@ public class CartServiceImpl implements CartService {
       }
     }
     return false;
+  }
+
+  @Override
+  public Boolean requestOrder(RequestOrder requestOrder) {
+    return null;
   }
 
   private String getKey(String emailUser) {
