@@ -8,6 +8,12 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
       discovery:
         locator:
           enabled: true

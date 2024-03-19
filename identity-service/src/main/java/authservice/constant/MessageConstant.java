@@ -13,21 +13,21 @@ public class MessageConstant {
 
 
 //  actions
-  public static final String FIND = "Find";
-  public static final String SUCCESS = "successfully!";
-  public static final String FAILED = "failed!";
-  public static final String LOGIN = "Login";
-  public static final String REGISTER = "Register";
-  public static final String UPDATE = "Update";
-  public static final String DELETE = "Delete";
+  public static final String FIND = "Tìm";
+  public static final String SUCCESS = "thành công!";
+  public static final String FAILED = "lỗi!";
+  public static final String LOGIN = "Đăng nhập";
+  public static final String REGISTER = "Đăng ký";
+  public static final String UPDATE = "Cập nhật";
+  public static final String DELETE = "Xóa";
   public static final String REFRESH_TOKEN = "Refresh token";
 
   public static final String EMAIL = "Email";
-  public static final String EXISTED = "Existed";
-  public static final String NOT_FOUND = "not found!";
-  public static final String EMAIL_EXISTED = "Email was existed!";
-  public static final String USER = "User";
-  public static final String CHANGE_PASSWORD = "Change password";
+  public static final String EXISTED = "tồn tại";
+  public static final String NOT_FOUND = "không tìm thấy!";
+  public static final String EMAIL_EXISTED = "Email đã tồn tại!";
+  public static final String USER = "Người dùng";
+  public static final String CHANGE_PASSWORD = "Thay đổi mật khẩu";
 
   public static final String LOGIN_SUCCESS = String.format(CHAR_SEQUENCE_2, LOGIN, SUCCESS);
   public static final String REGISTER_SUCCESS = String.format(CHAR_SEQUENCE_2, REGISTER, SUCCESS);
@@ -37,8 +37,8 @@ public class MessageConstant {
   public static final String UPDATE_USER_SUCCESS = String.format(CHAR_SEQUENCE_3, UPDATE, USER, SUCCESS);
   public static final String CHANGE_PASSWORD_SUCCESS = String.format(CHAR_SEQUENCE_2, CHANGE_PASSWORD, SUCCESS);
   public static final String DELETE_USER_SUCCESS = String.format(CHAR_SEQUENCE_3, DELETE, USER, SUCCESS);
-  public static final String OLD_PASSWORD_NOT_MATCHES = "Old password is not matches!";
-  public static final String EXPIRED_TOKEN_VERIFICATION = "Verification token has expired. Please request a new one.";
-  public static final String INVALID_TOKEN_VERIFICATION = "Invalid or expired verification token.";
-  public static final String UNVERIFIED_ACCOUNT = "Unverified Account!";
+  public static final String OLD_PASSWORD_NOT_MATCHES = "Mật khẩu cũ không đúng!";
+  public static final String EXPIRED_TOKEN_VERIFICATION = "Mã xác minh đã hết hạn, vui lòng yêu cầu một mã mới.";
+  public static final String INVALID_TOKEN_VERIFICATION = "Mã xác minh không hợp lệ hoặc đã hết hạn.";
+  public static final String UNVERIFIED_ACCOUNT = "Tài khoản chưa được xác minh!";
 }
