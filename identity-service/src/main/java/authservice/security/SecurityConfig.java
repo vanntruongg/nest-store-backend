@@ -40,12 +40,12 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .exceptionHandling(exception -> exception
                     .authenticationEntryPoint(authEntryPointJwt))
-            .sessionManagement(session ->
-                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/auth/register", "/auth/login", "/auth/verify-email").permitAll()
                     .anyRequest().authenticated()
-            );
+            )
+            .sessionManagement(session ->
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
     http.addFilterBefore(authFilterService(), UsernamePasswordAuthenticationFilter.class);
 
