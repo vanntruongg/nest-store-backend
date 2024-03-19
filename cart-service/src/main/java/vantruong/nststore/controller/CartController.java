@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import vantruong.nststore.common.CommonResponse;
 import vantruong.nststore.constant.MessageConstant;
 import vantruong.nststore.dto.CartItemDto;
+import vantruong.nststore.dto.RequestOrder;
 import vantruong.nststore.dto.UpdateQuantityRequest;
 import vantruong.nststore.service.CartService;
 
@@ -31,7 +32,7 @@ public class CartController {
   public ResponseEntity<CommonResponse<Object>> addToCart(@RequestBody @Valid CartItemDto cartItemDto) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
-            .message("Find successfully!")
+            .message(MessageConstant.ADD_TO_CART_SUCCESS)
             .data(cartService.addToCart(cartItemDto))
             .build());
   }
@@ -40,7 +41,7 @@ public class CartController {
   public ResponseEntity<CommonResponse<Object>> removeFromCart(@PathVariable("email") String email, @PathVariable("id") int productId) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
-            .message("Find successfully!")
+            .message(MessageConstant.DELETE_SUCCESS)
             .data(cartService.removeFromCart(email, productId))
             .build());
   }
@@ -51,6 +52,15 @@ public class CartController {
             .isSuccess(true)
             .message(MessageConstant.UPDATE_SUCCESS)
             .data(cartService.updateQuantity(request))
+            .build());
+  }
+
+  @PostMapping("")
+  public ResponseEntity<CommonResponse<Object>> requestOrder(@RequestBody RequestOrder requestOrder) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.UPDATE_SUCCESS)
+            .data(cartService.requestOrder(requestOrder))
             .build());
   }
 }
