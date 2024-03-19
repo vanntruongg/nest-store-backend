@@ -51,6 +51,8 @@ public class IdentityServiceImpl implements IdentityService {
             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
     );
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+    // check if user has verified the account
     if (!userDetails.isVerified()) {
       throw new UnVerifiedAccountException(ErrorCode.DENIED, MessageConstant.UNVERIFIED_ACCOUNT);
     }
