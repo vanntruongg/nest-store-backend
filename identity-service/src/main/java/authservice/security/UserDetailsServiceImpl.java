@@ -12,10 +12,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
   private final UserCredentialRepository repository;
+
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     User user = repository.findByEmail(username).orElseThrow(() ->
-            new UsernameNotFoundException("User credential not found with email: " + username));
+            new UsernameNotFoundException("Tài khoản không tồn tại.")
+    );
 
     return new UserDetailsImpl(user);
   }

@@ -1,10 +1,7 @@
 package authservice.exception.handler;
 
-import authservice.exception.DuplicationException;
+import authservice.exception.*;
 import authservice.common.CommonResponse;
-import authservice.exception.NotFoundException;
-import authservice.exception.OldPasswordNotMatches;
-import authservice.exception.UnVerifiedAccountException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

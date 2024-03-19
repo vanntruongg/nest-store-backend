@@ -37,8 +37,10 @@ public class MessageConstant {
   public static final String UPDATE_USER_SUCCESS = String.format(CHAR_SEQUENCE_3, UPDATE, USER, SUCCESS);
   public static final String CHANGE_PASSWORD_SUCCESS = String.format(CHAR_SEQUENCE_2, CHANGE_PASSWORD, SUCCESS);
   public static final String DELETE_USER_SUCCESS = String.format(CHAR_SEQUENCE_3, DELETE, USER, SUCCESS);
+  public static final String ACCOUNT_NOT_FOUND = "Tài khoản không tồn tại.";
   public static final String OLD_PASSWORD_NOT_MATCHES = "Mật khẩu cũ không đúng!";
   public static final String EXPIRED_TOKEN_VERIFICATION = "Mã xác minh đã hết hạn, vui lòng yêu cầu một mã mới.";
   public static final String INVALID_TOKEN_VERIFICATION = "Mã xác minh không hợp lệ hoặc đã hết hạn.";
   public static final String UNVERIFIED_ACCOUNT = "Tài khoản chưa được xác minh!";
+  public static final String PASSWORD_INCORRECT = "Mật khẩu không chính xác.";
 }

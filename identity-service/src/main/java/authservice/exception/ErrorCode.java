@@ -6,4 +6,5 @@ public class ErrorCode {
   public static final Integer NULL = 405;
   public static final Integer DENIED = 403;
   public static final Integer EXPIRED = 101;
+  public static final Integer PASSWORD_INCORRECT = 422;
 }
