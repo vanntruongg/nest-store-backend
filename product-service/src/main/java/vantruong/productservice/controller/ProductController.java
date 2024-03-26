@@ -57,11 +57,14 @@ public class ProductController {
 //  }
 
   @GetMapping(PRODUCT_GET_BY_NAME)
-  public ResponseEntity<CommonResponse<Object>> getProductByName(@RequestParam("name") String name) {
+  public ResponseEntity<CommonResponse<Object>> getProductByName(
+          @RequestParam("name") String name,
+          @RequestParam("limit") int limit
+  ) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
-            .data(productService.findProductByName(name))
+            .data(productService.findProductByName(name, limit))
             .build());
   }
 

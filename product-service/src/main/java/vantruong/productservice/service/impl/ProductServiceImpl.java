@@ -1,9 +1,7 @@
 package vantruong.productservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.*;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import vantruong.productservice.constant.MessageConstant;
 import vantruong.productservice.entity.Category;
@@ -15,9 +13,10 @@ import vantruong.productservice.exception.NotFoundException;
 import vantruong.productservice.repository.ProductRepository;
 import vantruong.productservice.service.CategoryService;
 import vantruong.productservice.service.ProductService;
-import vantruong.productservice.specification.ProductSpecification;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
   private final ProductRepository productRepository;
   private final CategoryService categoryService;
-  private final ProductSpecification specification;
+  //  private final ProductSpecification specification;
   private static final int PAGE_SIZE = 10;
 
   private Pageable createPagingAndSort(String order, int pageNo) {
@@ -43,6 +42,7 @@ public class ProductServiceImpl implements ProductService {
       List<Product> productList = getAllProductByCategoryId(categoryId);
       Pageable pageable = createPagingAndSort(order, pageNo);
 
+      // sort list product before using paging because PageImpl not sort
       List<Product> sortedList = sortList(productList, order);
       int first = Math.min(Long.valueOf(pageable.getOffset()).intValue(), sortedList.size());
       int last = Math.min(first + pageable.getPageSize(), sortedList.size());
@@ -62,6 +62,13 @@ public class ProductServiceImpl implements ProductService {
             .build();
   }
 
+
+  /**
+   * recursion func
+   *
+   * @param id
+   * @return
+   */
   @Override
   public List<Product> getAllProductByCategoryId(int id) {
     List<Category> categories = categoryService.getSubCategoriesByParentId(id);
@@ -78,10 +85,19 @@ public class ProductServiceImpl implements ProductService {
     }
   }
 
+  /**
+   * @param products
+   * @param order:   asc || desc
+   * @return List
+   */
   @Override
   public List<Product> sortList(List<Product> products, String order) {
+    // if order empty return list product not sort
+    if (order.isEmpty()) {
+      return products;
+    }
     Comparator<Product> comparator = Comparator.comparing(Product::getPrice);
-    if (order != null && order.equalsIgnoreCase("desc")) {
+    if (order.equalsIgnoreCase("desc")) {
       comparator = comparator.reversed();
     }
     return products.stream()
@@ -104,8 +120,13 @@ public class ProductServiceImpl implements ProductService {
     return productRepository.save(product);
   }
 
+  /**
+   * @param name
+   * @param limit
+   * @return list product with name like %name% and ignoreCase
+   */
   @Override
-  public List<Product> findProductByName(String name) {
-    return productRepository.findProductByNameContainingIgnoreCase(name.trim(), Limit.of(10));
+  public List<Product> findProductByName(String name, int limit) {
+    return productRepository.findProductByNameContainingIgnoreCase(name.trim(), Limit.of(limit));
   }
 }

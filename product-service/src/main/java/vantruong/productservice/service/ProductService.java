@@ -1,7 +1,6 @@
 package vantruong.productservice.service;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import vantruong.productservice.entity.Product;
 import vantruong.productservice.entity.dto.ProductDto;
 import vantruong.productservice.entity.dto.ProductResponse;
@@ -14,9 +13,10 @@ public interface ProductService {
   ProductResponse getProductById(int id);
 
   List<Product> getAllProductByCategoryId(int id);
+
   List<Product> sortList(List<Product> products, String order);
 
   Product createProduct(ProductDto productDto);
 
-  List<Product> findProductByName(String name);
+  List<Product> findProductByName(String name, int limit);
 }
