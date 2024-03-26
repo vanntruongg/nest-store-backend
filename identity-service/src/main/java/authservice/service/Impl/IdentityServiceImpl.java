@@ -15,6 +15,8 @@ import authservice.security.SecurityContextHelper;
 import authservice.security.UserDetailsImpl;
 import authservice.security.UserDetailsServiceImpl;
 import authservice.service.IdentityService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +24,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -50,17 +53,16 @@ public class IdentityServiceImpl implements IdentityService {
     var authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
     );
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
     // check if user has verified the account
-    if (!userDetails.isVerified()) {
+    if (!userPrincipal.isVerified()) {
       throw new UnVerifiedAccountException(ErrorCode.DENIED, MessageConstant.UNVERIFIED_ACCOUNT);
     }
 
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-
-    String accessToken = jwtService.generateAccessToken(userDetails);
-    String refreshToken = jwtService.generateRefreshToken(userDetails);
+    String accessToken = jwtService.generateAccessToken(userPrincipal);
+    String refreshToken = jwtService.generateRefreshToken(userPrincipal);
     return LoginResponse.builder()
             .accessToken(accessToken)
             .refreshToken(refreshToken)
@@ -226,6 +228,27 @@ public class IdentityServiceImpl implements IdentityService {
     user.setAddress(address);
     repository.save(user);
     return true;
+  }
+
+  @Override
+  public Boolean logout(HttpServletRequest request, HttpServletResponse response) {
+    var auth = SecurityContextHolder.getContext().getAuthentication();
+    if (auth == null) {
+      return false;
+    }
+
+    UserDetailsImpl userDetails = null;
+    if (auth instanceof UsernamePasswordAuthenticationToken) {
+      userDetails = (UserDetailsImpl) auth.getPrincipal();
+    }
+
+    if (userDetails != null) {
+      new SecurityContextLogoutHandler().logout(request, response, auth);
+      SecurityContextHolder.getContext().setAuthentication(null);
+      auth.setAuthenticated(false);
+      return true;
+    }
+    return false;
   }
 
 }

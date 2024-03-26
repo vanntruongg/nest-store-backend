@@ -11,7 +11,6 @@ import vantruong.productservice.repository.CategoryRepository;
 import vantruong.productservice.service.CategoryService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +59,9 @@ public class CategoryServiceImpl implements CategoryService {
 
   private void getAllChildrenByCategoryRecursive(int categoryId, List<CategoryResponse> result) {
     List<Category> children = getSubCategoriesByParentId(categoryId);
+
+    /* Each time the recursive call is made,
+      the list of categories is set to the subcategory */
     for (Category child : children) {
       CategoryResponse categoryResponse = new CategoryResponse();
       categoryResponse.setCategory(child);

@@ -4,6 +4,8 @@ import authservice.common.CommonResponse;
 import authservice.constant.MessageConstant;
 import authservice.entity.dto.*;
 import authservice.service.IdentityService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -56,6 +58,15 @@ public class IdentityController {
     } catch (BadCredentialsException ex) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CommonResponse.builder()
               .isSuccess(false).message(MessageConstant.REFRESH_TOKEN_FAIL).build());
+    }
+  }
+
+  @PostMapping(LOGOUT)
+  public ResponseEntity<CommonResponse<Object>> logout(HttpServletRequest request, HttpServletResponse response) {
+    if (identityService.logout(request, response)) {
+      return ResponseEntity.ok().body(CommonResponse.builder().isSuccess(true).message(MessageConstant.LOGOUT_SUCCESS).build());
+    } else {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(CommonResponse.builder().isSuccess(false).build());
     }
   }
 

@@ -2,6 +2,8 @@ package authservice.service;
 
 import authservice.entity.User;
 import authservice.entity.dto.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
@@ -32,4 +34,6 @@ public interface IdentityService {
   Boolean addPhoneNumber(String phone);
 
   Boolean addAddress(String address);
+
+  Boolean logout(HttpServletRequest request, HttpServletResponse response);
 }

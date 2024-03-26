@@ -17,6 +17,7 @@ public class MessageConstant {
   public static final String SUCCESS = "thành công!";
   public static final String FAILED = "lỗi!";
   public static final String LOGIN = "Đăng nhập";
+  private static final String LOGOUT = "Đăng xuất";
   public static final String REGISTER = "Đăng ký";
   public static final String UPDATE = "Cập nhật";
   public static final String DELETE = "Xóa";
@@ -43,4 +44,5 @@ public class MessageConstant {
   public static final String INVALID_TOKEN_VERIFICATION = "Mã xác minh không hợp lệ hoặc đã hết hạn.";
   public static final String UNVERIFIED_ACCOUNT = "Tài khoản chưa được xác minh!";
   public static final String PASSWORD_INCORRECT = "Mật khẩu không chính xác.";
+  public static final String LOGOUT_SUCCESS = String.format(CHAR_SEQUENCE_2, LOGOUT, SUCCESS);
 }

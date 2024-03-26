@@ -50,4 +50,13 @@ public class RestResponseEntityExceptionHandler {
             .errorDetails(ex.getCause() != null ? ex.getCause().getMessage() : StringUtils.EMPTY)
             .build());
   }
+
+  @ExceptionHandler(value = {FormException.class})
+  public ResponseEntity<CommonResponse<Object>> handleFormException(Exception ex, WebRequest request) {
+    return ResponseEntity.status(ErrorCode.FORM_ERROR).body(CommonResponse.builder()
+            .isSuccess(false)
+            .message(ex.getMessage())
+            .errorDetails(ex.getCause() != null ? ex.getCause().getMessage() : StringUtils.EMPTY)
+            .build());
+  }
 }

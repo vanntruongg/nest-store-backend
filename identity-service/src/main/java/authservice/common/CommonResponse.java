@@ -10,6 +10,7 @@ import lombok.Setter;
 public class CommonResponse<T> {
   private boolean isSuccess;
   private String message;
+  private String field;
   private T data;
   private String errorDetails;
 }

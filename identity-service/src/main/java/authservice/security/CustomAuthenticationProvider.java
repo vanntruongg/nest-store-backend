@@ -2,8 +2,7 @@ package authservice.security;
 
 import authservice.constant.MessageConstant;
 import authservice.exception.ErrorCode;
-import authservice.exception.PasswordIncorrectException;
-import authservice.exception.UnVerifiedAccountException;
+import authservice.exception.FormException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +26,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
     if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-      throw new PasswordIncorrectException(MessageConstant.PASSWORD_INCORRECT);
+      throw new FormException(ErrorCode.FORM_ERROR, MessageConstant.PASSWORD_INCORRECT,  new Throwable("password"));
     }
     return new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
   }
