@@ -30,6 +30,12 @@ spring:
             - Path=/product/**
           filters:
             - RewritePath=/product(?<remaining>.*), ${remaining}
+        - id: cart-service-route
+          uri: ${CART_ROUTE_URI:http://localhost:9004}
+          predicates:
+            - Path=/cart/**
+          filters:
+            - RewritePath=/cart(?<remaining>.*), ${remaining}
         - id: order-service-route
           uri: ${ORDER_ROUTE_URI:http://localhost:9005}
           predicates:
