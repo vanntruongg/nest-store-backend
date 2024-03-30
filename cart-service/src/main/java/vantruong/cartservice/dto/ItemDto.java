@@ -1,4 +1,4 @@
-package vantruong.nststore.dto;
+package vantruong.cartservice.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -7,15 +7,15 @@ import lombok.Getter;
 @Getter
 public class ItemDto {
   @NotEmpty
-  private int itemId;
+  private int id;
   @Min(value = 0, message = "Quantity must be non-negative")
   private int quantity;
   @Min(value = 0, message = "Item price must be non-negative")
-  private double itemPrice;
+  private double price;
   @NotEmpty
-  private String itemName;
+  private String name;
   @NotEmpty
-  private String itemCategory;
+  private String category;
   @NotEmpty
-  private String itemImageUrl;
+  private String imageUrl;
 }
