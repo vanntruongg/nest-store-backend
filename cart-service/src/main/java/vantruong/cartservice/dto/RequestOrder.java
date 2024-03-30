@@ -1,4 +1,4 @@
-package vantruong.nststore.dto;
+package vantruong.cartservice.dto;
 
 public class RequestOrder {
   private String email;

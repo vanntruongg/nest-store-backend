@@ -1,4 +1,4 @@
-package vantruong.nststore.constant;
+package vantruong.cartservice.constant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,10 +15,12 @@ public class MessageConstant {
   public static final String ADD_TO_CART = "Thêm vào giỏ hàng";
 
 //  status
-
+  public static final String NOT_FOUND = "Không tìm thấy";
+  public static final String USER = "người dùng";
 
   public static final String FIND_SUCCESS = String.format(CHAR_SEQUENCE_2, FIND, SUCCESS);
   public static final String UPDATE_SUCCESS = String.format(CHAR_SEQUENCE_2, UPDATE, SUCCESS);
   public static final String ADD_TO_CART_SUCCESS = String.format(CHAR_SEQUENCE_2, ADD_TO_CART, SUCCESS);
   public static final String DELETE_SUCCESS = String.format(CHAR_SEQUENCE_2, DELETE, SUCCESS);
+  public static final String USER_NOT_FOUND = String.format(CHAR_SEQUENCE_2, NOT_FOUND, USER);
 }

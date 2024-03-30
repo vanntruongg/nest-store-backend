@@ -1,4 +1,4 @@
-package vantruong.nststore.common;
+package vantruong.cartservice.common;
 
 import lombok.Builder;
 import lombok.Getter;
