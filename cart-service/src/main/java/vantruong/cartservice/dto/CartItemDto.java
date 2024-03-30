@@ -1,4 +1,4 @@
-package vantruong.nststore.dto;
+package vantruong.cartservice.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
