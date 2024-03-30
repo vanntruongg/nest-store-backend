@@ -1,4 +1,4 @@
-package vantruong.nststore;
+package vantruong.cartservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

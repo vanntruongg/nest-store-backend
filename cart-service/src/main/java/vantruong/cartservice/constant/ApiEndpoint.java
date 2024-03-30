@@ -1,4 +1,4 @@
-package vantruong.nststore.constant;
+package vantruong.cartservice.constant;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -15,11 +15,12 @@ public class ApiEndpoint {
 
   public static final String CART = "/cart";
 
-  public static final String GET_ALL = "/get-all";
   public static final String REMOVE = "/remove";
+  private static final String UPDATE = "/update";
 
-  public static final String CART_GET_ALL = GET_ALL + EMAIL_PARAM;
+  public static final String CART_GET_ALL = "/items";
   public static final String ADD_TO_CART = "/add";
-  public static final String REMOVE_FROM_CART = REMOVE + EMAIL_PARAM + ID_PARAM;
+  public static final String REMOVE_FROM_CART = REMOVE;
 
+  public static final String CART_UPDATE = UPDATE;
 }
