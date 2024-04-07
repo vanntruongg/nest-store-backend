@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -33,14 +35,15 @@ public class OrderDetailServiceImpl implements OrderDetailService {
   @Transactional
   public void createOrderDetails(Order order, List<OrderDetailDto> orderDetailDTOs) {
     List<OrderDetail> orderDetails = new ArrayList<>();
+    Map<Integer, Integer> stockUpdate = new HashMap<>();
     orderDetailDTOs.forEach(orderDetailDto -> {
       OrderDetail orderDetail = mapOrderDetailDTOToOrderDetail(orderDetailDto);
       orderDetail.setOrder(order);
       orderDetails.add(orderDetail);
-
+      stockUpdate.put(orderDetailDto.getProductId(), orderDetailDto.getQuantity());
 //    call the product service to update product quantity
-      restClient.updateProductQuantity(orderDetailDto.getProductId(), orderDetailDto.getQuantity());
     });
+    restClient.updateProductQuantity(stockUpdate);
     orderDetailRepository.saveAll(orderDetails);
 
 //  call the cart service to remove items from the cart
