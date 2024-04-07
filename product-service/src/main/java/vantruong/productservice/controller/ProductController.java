@@ -8,6 +8,8 @@ import vantruong.productservice.constant.MessageConstant;
 import vantruong.productservice.entity.dto.ProductDto;
 import vantruong.productservice.service.ProductService;
 
+import java.util.Map;
+
 import static vantruong.productservice.constant.ApiEndpoint.*;
 
 
@@ -43,18 +45,27 @@ public class ProductController {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
-            .data(productService.getProductById(id))
+            .data(productService.getProductWithCategoryById(id))
             .build());
   }
 
-//  @GetMapping(PRODUCT_GET_BY_CATEGORY_ID)
-//  public ResponseEntity<CommonResponse<Object>> getAllProductByCategoryId(@PathVariable("id") int id) {
-//    return ResponseEntity.ok().body(CommonResponse.builder()
-//            .isSuccess(true)
-//            .message(MessageConstant.FIND_SUCCESS)
-//            .data(productService.getAllProductByCategoryId(id))
-//            .build());
-//  }
+  @GetMapping(PRODUCT_GET_STOCK_BY_ID)
+  public ResponseEntity<CommonResponse<Object>> getStockById(@PathVariable("id") int id) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(productService.getStockById(id))
+            .build());
+  }
+
+  @GetMapping("/update-quantity")
+  public ResponseEntity<CommonResponse<Object>> updateProductQuantityByOrder(@RequestBody Map<Integer, Integer> stockUpdate) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(productService.updateProductQuantityByOrder(stockUpdate))
+            .build());
+  }
 
   @GetMapping(PRODUCT_GET_BY_NAME)
   public ResponseEntity<CommonResponse<Object>> getProductByName(

@@ -35,4 +35,6 @@ public class Product extends BaseEntity {
   @JoinColumn(name = "cat_id", referencedColumnName = "cat_id")
   private Category category;
 
+  @Column(name = "p_stock")
+  private int stock;
 }

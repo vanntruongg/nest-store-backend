@@ -10,4 +10,5 @@ public class ProductDto {
   private String style;
   private String imageUrl;
   private int categoryId;
+  private int stock;
 }
