@@ -2,36 +2,32 @@ package orderservice.client;
 
 import lombok.RequiredArgsConstructor;
 import orderservice.common.CommonResponse;
-import orderservice.constant.CommonConstant;
+import orderservice.constant.ApiEndpoint;
 import orderservice.entity.dto.OrderDetailDto;
 import orderservice.exception.ErrorCode;
 import orderservice.exception.InsufficientProductQuantityException;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
 public class RestClient {
   private final RestTemplate restTemplate;
 
-  public void updateProductQuantity(int productId, int quantity) {
-    String url = CommonConstant.PRODUCT_SERVICE_URL + "/product/" + productId + "/update-quantity?quantity=" + quantity;
+  public void updateProductQuantity(Map<Integer, Integer> stockUpdate) {
+    String url = ApiEndpoint.PRODUCT_SERVICE_URL + "/update-quantity-order";
 
     try {
-      ResponseEntity<CommonResponse<Object>> response = restTemplate.exchange(
-              url,
-              HttpMethod.PATCH,
-              null,
-              new ParameterizedTypeReference<>() {
-              });
-      if (response.getBody() != null && !response.getBody().isSuccess()) {
-        throw new InsufficientProductQuantityException(ErrorCode.UNPROCESSABLE_ENTITY, response.getBody().getMessage());
+      ResponseEntity<Object> response = restTemplate.postForEntity(url, stockUpdate, Object.class);
+      if (response.getBody() != null && response.getBody() instanceof CommonResponse<?> commonResponse) {
+        if (!commonResponse.isSuccess()) {
+          throw new InsufficientProductQuantityException(ErrorCode.UNPROCESSABLE_ENTITY, commonResponse.getMessage());
+        }
       }
     } catch (InsufficientProductQuantityException exception) {
       throw new InsufficientProductQuantityException(ErrorCode.UNPROCESSABLE_ENTITY, exception.getMessage());
@@ -39,8 +35,8 @@ public class RestClient {
   }
 
   public void removeItemsFromCart(String email, @NotNull List<OrderDetailDto> orderDetailDTOs) {
-    List<Integer> productIds = orderDetailDTOs.stream().map(OrderDetailDto::getProductId).toList();
-    String url = CommonConstant.CART_SERVICE_URL + "/cart/" + email + "/remove-items?productIds=" + productIds;
-    restTemplate.delete(url);
+      List<Integer> productIds = orderDetailDTOs.stream().map(OrderDetailDto::getProductId).toList();
+      String url = ApiEndpoint.CART_SERVICE_URL + "/" + email + "/remove-items?productIds=" + productIds;
+      restTemplate.delete(url);
   }
 }
