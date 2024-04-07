@@ -16,6 +16,7 @@ public class ApiEndpoint {
   public static final String CREATE = "/create";
 
   public static final String PRODUCT = "/product";
+  public static final String STOCK = "/stock";
   public static final String PRODUCTS = "/products";
   public static final String CATEGORY = "/category";
   public static final String SUB_CATEGORY = "/subcategory";
@@ -27,4 +28,5 @@ public class ApiEndpoint {
   public static final String PRODUCT_GET_BY_NAME = GET + NAME;
   public static final String CATEGORY_GET_SUBCATEGORY = CATEGORY + SUB_CATEGORY + ID_PARAM;
   public static final String CATEGORY_GET_SUBCATEGORY_ALL_LEVEL = CATEGORY + SUB_CATEGORY + ALL_LEVEL + ID_PARAM;
+  public static final String PRODUCT_GET_STOCK_BY_ID = GET + STOCK + ID_PARAM;
 }
