@@ -3,12 +3,16 @@ package vantruong.cartservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import vantruong.cartservice.client.RestClient;
+import vantruong.cartservice.constant.MessageConstant;
 import vantruong.cartservice.dto.CartItemDto;
 import vantruong.cartservice.dto.ItemDto;
-import vantruong.cartservice.dto.RequestOrder;
 import vantruong.cartservice.dto.UpdateQuantityRequest;
 import vantruong.cartservice.entity.CartItem;
 import vantruong.cartservice.entity.Item;
+import vantruong.cartservice.exception.ErrorCode;
+import vantruong.cartservice.exception.InsufficientProductQuantityException;
+import vantruong.cartservice.exception.NotFoundException;
 import vantruong.cartservice.repository.CartRepository;
 import vantruong.cartservice.service.CartService;
 
@@ -20,10 +24,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
-  public final CartRepository cartRepository;
+  private final CartRepository cartRepository;
+  private final RestClient restClient;
 
   @Override
   public CartItem findById(String email) {
+    return cartRepository.findById(email).orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.CART_NOT_FOUND));
+  }
+
+  @Override
+  public CartItem findByIdOrCreate(String email) {
     return cartRepository.findById(email).orElseGet(() -> new CartItem(email, new ArrayList<>(), 0.0));
   }
 
@@ -31,7 +41,7 @@ public class CartServiceImpl implements CartService {
   @Transactional
   public Boolean addToCart(CartItemDto cartItemDto) {
     // find the cart by email
-    CartItem cartItem = findById(cartItemDto.getEmail());
+    CartItem cartItem = findByIdOrCreate(cartItemDto.getEmail());
 
     // check and initialize the items list if it doesn't exist
     List<Item> items = cartItem.getItems();
@@ -64,7 +74,6 @@ public class CartServiceImpl implements CartService {
             .findFirst()
             .orElse(null);
   }
-
 
   // calculate the total price of the cart
   private double calculatorTotalPrice(List<Item> items) {
@@ -110,16 +119,25 @@ public class CartServiceImpl implements CartService {
             .filter(item -> item.getId() == request.getItemId()).findFirst();
 
     if (foundItem.isPresent()) {
-      foundItem.get().setQuantity(request.getQuantity());
-      cartItem.setTotalPrice(calculatorTotalPrice(cartItem.getItems()));
-      cartRepository.save(cartItem);
+      Object stock = restClient.getStockProductById(foundItem.get().getId());
+      if ((int) stock < request.getQuantity()) {
+        throw new InsufficientProductQuantityException(ErrorCode.UNPROCESSABLE_ENTITY, MessageConstant.INSUFFICIENT_PRODUCT_QUANTITY);
+      } else {
+        foundItem.get().setQuantity(request.getQuantity());
+        cartItem.setTotalPrice(calculatorTotalPrice(cartItem.getItems()));
+        cartRepository.save(cartItem);
+      }
       return true;
     }
     return false;
   }
 
   @Override
-  public Boolean requestOrder(RequestOrder requestOrder) {
-    return null;
+  public Boolean removeItemsFromCart(String email, List<Integer> itemIds) {
+    CartItem cartItem = findById(email);
+    Boolean itemsRemoved = cartItem.getItems().removeIf(item -> itemIds.contains(item.getId()));
+
+    cartRepository.save(cartItem);
+    return itemsRemoved;
   }
 }

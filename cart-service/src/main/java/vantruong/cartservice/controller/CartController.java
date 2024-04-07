@@ -5,19 +5,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vantruong.cartservice.common.CommonResponse;
-import vantruong.cartservice.constant.ApiEndpoint;
 import vantruong.cartservice.constant.MessageConstant;
 import vantruong.cartservice.dto.CartItemDto;
-import vantruong.cartservice.dto.RequestOrder;
 import vantruong.cartservice.dto.UpdateQuantityRequest;
 import vantruong.cartservice.service.CartService;
+
+import java.util.List;
+
+import static vantruong.cartservice.constant.ApiEndpoint.*;
 
 @RestController
 @RequiredArgsConstructor
 public class CartController {
   private final CartService cartService;
 
-  @GetMapping(ApiEndpoint.CART_GET_ALL)
+  @GetMapping(CART_GET_ALL)
   public ResponseEntity<CommonResponse<Object>> getAll(@RequestParam("email") String email) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
@@ -26,7 +28,7 @@ public class CartController {
             .build());
   }
 
-  @PostMapping(ApiEndpoint.ADD_TO_CART)
+  @PostMapping(ADD_TO_CART)
   public ResponseEntity<CommonResponse<Object>> addToCart(@RequestBody @Valid CartItemDto cartItemDto) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
@@ -35,7 +37,7 @@ public class CartController {
             .build());
   }
 
-  @PostMapping(ApiEndpoint.REMOVE_FROM_CART)
+  @PostMapping(REMOVE_FROM_CART)
   public ResponseEntity<CommonResponse<Object>> removeFromCart(@RequestParam("email") String email, @RequestParam("id") int productId) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
@@ -44,7 +46,7 @@ public class CartController {
             .build());
   }
 
-  @PostMapping(ApiEndpoint.CART_UPDATE)
+  @PostMapping(CART_UPDATE)
   public ResponseEntity<CommonResponse<Object>> updateQuantity(@RequestBody UpdateQuantityRequest request) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
@@ -53,12 +55,14 @@ public class CartController {
             .build());
   }
 
-  @PostMapping("")
-  public ResponseEntity<CommonResponse<Object>> requestOrder(@RequestBody RequestOrder requestOrder) {
+  @PostMapping(CART_REMOVE_ITEMS)
+  public ResponseEntity<CommonResponse<Object>> requestOrder(
+          @PathVariable("email") String email, @RequestBody List<Integer> itemIds
+  ) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.UPDATE_SUCCESS)
-            .data(cartService.requestOrder(requestOrder))
+            .data(cartService.removeItemsFromCart(email, itemIds))
             .build());
   }
 }
