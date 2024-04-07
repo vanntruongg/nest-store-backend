@@ -19,4 +19,13 @@ public class RestResponseEntityExceptionHandler {
             .errorDetails(exception.getCause() != null ? exception.getCause().getMessage() : StringUtils.EMPTY)
             .build());
   }
+
+  @ExceptionHandler(value = InsufficientProductQuantityException.class)
+  public ResponseEntity<CommonResponse<Object>> handleInsufficientProductQuantityException(WebRequest request, Exception exception) {
+    return ResponseEntity.status(ErrorCode.UNPROCESSABLE_ENTITY).body(CommonResponse.builder()
+            .isSuccess(false)
+            .message(exception.getMessage())
+            .errorDetails(exception.getCause() != null ? exception.getCause().getMessage() : StringUtils.EMPTY)
+            .build());
+  }
 }
