@@ -33,6 +33,24 @@ public class OrderController {
             .build());
   }
 
+  @GetMapping(GET_BY_EMAIL)
+  public ResponseEntity<CommonResponse<Object>> getOrderByEmail(@RequestParam("email") String email) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(orderService.getOrderByEmail(email))
+            .build());
+  }
+
+  @GetMapping(GET_BY_ID)
+  public ResponseEntity<CommonResponse<Object>> getOrderById(@PathVariable("id") int id) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(orderService.getOrderById(id))
+            .build());
+  }
+
   @GetMapping(GET_BY_STATUS)
   public ResponseEntity<CommonResponse<Object>> getOrderByStatus(@RequestParam("status") String status) {
     return ResponseEntity.ok().body(CommonResponse.builder()
