@@ -43,11 +43,17 @@ public class OrderDetailServiceImpl implements OrderDetailService {
       stockUpdate.put(orderDetailDto.getProductId(), orderDetailDto.getQuantity());
 //    call the product service to update product quantity
     });
-    restClient.updateProductQuantity(stockUpdate);
     orderDetailRepository.saveAll(orderDetails);
+
+    restClient.updateProductQuantity(stockUpdate);
 
 //  call the cart service to remove items from the cart
     restClient.removeItemsFromCart(order.getEmail(), orderDetailDTOs);
+  }
+
+  @Override
+  public List<OrderDetail> getAllOrderDetailByOrder(Order order) {
+    return orderDetailRepository.findAllByOrder(order);
   }
 
   private OrderDetail mapOrderDetailDTOToOrderDetail(OrderDetailDto orderDetailDto) {
