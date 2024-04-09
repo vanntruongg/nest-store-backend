@@ -3,6 +3,9 @@ package vantruong.productservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import vantruong.productservice.common.CommonResponse;
+import vantruong.productservice.common.Utils;
 import vantruong.productservice.constant.MessageConstant;
 import vantruong.productservice.entity.Category;
 import vantruong.productservice.entity.Product;
@@ -14,9 +17,7 @@ import vantruong.productservice.repository.ProductRepository;
 import vantruong.productservice.service.CategoryService;
 import vantruong.productservice.service.ProductService;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,8 +54,8 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public ProductResponse getProductById(int id) {
-    Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.PRODUCT_NOT_FOUND));
+  public ProductResponse getProductWithCategoryById(int id) {
+    Product product = getProductById(id);
     List<Category> categories = categoryService.getAllLevelParentByCategory(product.getCategory().getId());
     return ProductResponse.builder()
             .product(product)
@@ -62,6 +63,10 @@ public class ProductServiceImpl implements ProductService {
             .build();
   }
 
+  @Override
+  public Product getProductById(int id) {
+    return productRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.PRODUCT_NOT_FOUND));
+  }
 
   /**
    * recursion func
@@ -128,5 +133,42 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public List<Product> findProductByName(String name, int limit) {
     return productRepository.findProductByNameContainingIgnoreCase(name.trim(), Limit.of(limit));
+  }
+
+  @Override
+  public int getStockById(int id) {
+    Optional<Product> product = productRepository.findById(id);
+    return product.map(Product::getStock).orElse(0);
+  }
+
+  @Override
+  @Transactional
+  public CommonResponse<Object> updateProductQuantityByOrder(Map<Integer, Integer> stockUpdate) {
+    List<String> errorMessages = new ArrayList<>();
+    for (Map.Entry<Integer, Integer> productIdAndQuantity : stockUpdate.entrySet()) {
+      int productId = productIdAndQuantity.getKey();
+      int quantity = productIdAndQuantity.getValue();
+
+      Product product = getProductById(productId);
+      int newQuantity = product.getStock() - quantity;
+      if (newQuantity < 0) {
+        errorMessages.add("Insufficient quantity for product with Id: " + productId);
+      } else {
+        product.setStock(newQuantity);
+        productRepository.save(product);
+      }
+    }
+
+    if(!errorMessages.isEmpty()) {
+      return CommonResponse.builder()
+              .isSuccess(false)
+              .message(Utils.formatErrorMessage(errorMessages))
+              .build();
+    }
+
+    return CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.UPDATE_QUANTITY_SUCCESS)
+            .build();
   }
 }
