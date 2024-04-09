@@ -10,7 +10,7 @@ import orderservice.enums.OrderStatus;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,9 @@ public class Order extends BaseEntity {
   @Column(name = "o_shipping_address")
   private String address;
 
+  @Column(name = "o_notes")
+  private String notes;
+
   @Column(name = "O_total_price")
   private double totalPrice;
 
@@ -33,6 +36,7 @@ public class Order extends BaseEntity {
   private OrderStatus orderStatus;
 
   @ManyToOne
-  @JoinColumn(name = "p_id", referencedColumnName = "p_id")
-  private Payment payment;
+  @JoinColumn(name = "o_payment_method", referencedColumnName = "pm_id")
+  private PaymentMethod paymentMethod;
+
 }
