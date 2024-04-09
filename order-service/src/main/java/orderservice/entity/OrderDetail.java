@@ -1,5 +1,6 @@
 package orderservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,7 +29,11 @@ public class OrderDetail extends BaseEntity {
   @Column(name = "product_price")
   private double productPrice;
 
+  @Column(name = "product_image")
+  private String productImage;
+
   @ManyToOne
   @JoinColumn(name = "o_id", referencedColumnName = "o_id")
+  @JsonIgnore
   private Order order;
 }
