@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class RequestOrder {
-  private String email;
-  private int productId;
+public class UpdateResponse {
+  private int newQuantity;
 }

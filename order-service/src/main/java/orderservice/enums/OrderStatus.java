@@ -13,4 +13,8 @@ public enum OrderStatus {
   CANCELED("Đã hủy");
 
   private final String orderStatus;
+
+  public String getName() {
+    return this.orderStatus;
+  }
 }

@@ -58,7 +58,7 @@ public class ProductController {
             .build());
   }
 
-  @GetMapping("/update-quantity")
+  @PostMapping("/update-quantity-order")
   public ResponseEntity<CommonResponse<Object>> updateProductQuantityByOrder(@RequestBody Map<Integer, Integer> stockUpdate) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)

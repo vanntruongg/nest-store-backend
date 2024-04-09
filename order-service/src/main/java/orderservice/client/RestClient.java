@@ -7,6 +7,10 @@ import orderservice.entity.dto.OrderDetailDto;
 import orderservice.exception.ErrorCode;
 import orderservice.exception.InsufficientProductQuantityException;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -35,8 +39,18 @@ public class RestClient {
   }
 
   public void removeItemsFromCart(String email, @NotNull List<OrderDetailDto> orderDetailDTOs) {
-      List<Integer> productIds = orderDetailDTOs.stream().map(OrderDetailDto::getProductId).toList();
-      String url = ApiEndpoint.CART_SERVICE_URL + "/" + email + "/remove-items?productIds=" + productIds;
-      restTemplate.delete(url);
+    HttpHeaders headers = new HttpHeaders();
+
+    List<Integer> productIds = orderDetailDTOs.stream().map(OrderDetailDto::getProductId).toList();
+    String url = ApiEndpoint.CART_SERVICE_URL + "/" + email + "/remove-items";
+
+    HttpEntity<List<Integer>> requestEntity = new HttpEntity<>(productIds, headers);
+    restTemplate.exchange(
+            url,
+            HttpMethod.DELETE,
+            requestEntity,
+            new ParameterizedTypeReference<CommonResponse<Object>>() {
+            }
+    );
   }
 }

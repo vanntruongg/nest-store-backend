@@ -1,15 +1,21 @@
 package orderservice.service;
 
+import orderservice.entity.dto.OrderDto;
 import orderservice.entity.dto.OrderRequest;
 import orderservice.entity.Order;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface OrderService {
-  List<Order> getAllOrder();
+  List<OrderDto> getAllOrder();
 
   Boolean createOrder(OrderRequest orderRequest);
 
-  List<Order> getOrderByStatus(String status);
-  List<Order> getOrderByEmailAndStatus(String email, String status);
+  List<OrderDto> getOrderByStatus(String status);
+  List<OrderDto> getOrderByEmailAndStatus(String email, String status);
+
+  List<OrderDto> getOrderByEmail(String email);
+
+  OrderDto getOrderById(int id);
 }

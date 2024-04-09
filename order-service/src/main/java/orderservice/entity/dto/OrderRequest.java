@@ -10,6 +10,7 @@ public class OrderRequest {
   private String phone;
   private String address;
   private float totalPrice;
+  private String notes;
   private int paymentMethodId;
   private List<OrderDetailDto> listProduct;
 }
