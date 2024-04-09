@@ -133,6 +133,7 @@ public class CartServiceImpl implements CartService {
   }
 
   @Override
+  @Transactional
   public Boolean removeItemsFromCart(String email, List<Integer> itemIds) {
     CartItem cartItem = findById(email);
     Boolean itemsRemoved = cartItem.getItems().removeIf(item -> itemIds.contains(item.getId()));
