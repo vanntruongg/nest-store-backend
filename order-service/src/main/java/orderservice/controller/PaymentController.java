@@ -11,12 +11,14 @@ import orderservice.service.PaymentService;
 
 import java.io.UnsupportedEncodingException;
 
+import static orderservice.constant.ApiEndpoint.GET_URL_PAYMENT;
+
 @RestController
 @RequiredArgsConstructor
 public class PaymentController {
   private final PaymentService paymentService;
 
-  @GetMapping("/get-url")
+  @GetMapping(GET_URL_PAYMENT)
   public ResponseEntity<CommonResponse<Object>> getOrderPayment(@RequestParam("amount") long amount) throws UnsupportedEncodingException {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
