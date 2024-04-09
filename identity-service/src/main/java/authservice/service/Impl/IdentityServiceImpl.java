@@ -1,6 +1,7 @@
 package authservice.service.Impl;
 
 import authservice.common.Utils;
+import authservice.constant.CommonConstant;
 import authservice.constant.MessageConstant;
 import authservice.constant.RoleConstant;
 import authservice.entity.Token;
@@ -106,7 +107,7 @@ public class IdentityServiceImpl implements IdentityService {
             .name(user.getFirstName())
             .token(token)
             .build();
-    restTemplate.postForLocation("http://localhost:9002/mail/verify", request);
+    restTemplate.postForLocation(CommonConstant.EMAIL_URL + "/mail/verify", request);
   }
 
   @Override
