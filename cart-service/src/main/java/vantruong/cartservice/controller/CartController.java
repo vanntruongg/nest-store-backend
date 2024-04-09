@@ -55,7 +55,7 @@ public class CartController {
             .build());
   }
 
-  @PostMapping(CART_REMOVE_ITEMS)
+  @DeleteMapping(CART_REMOVE_ITEMS)
   public ResponseEntity<CommonResponse<Object>> requestOrder(
           @PathVariable("email") String email, @RequestBody List<Integer> itemIds
   ) {
