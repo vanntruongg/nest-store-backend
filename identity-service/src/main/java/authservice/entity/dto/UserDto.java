@@ -2,6 +2,8 @@ package authservice.entity.dto;
 
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class UserDto {
   private String email;
@@ -10,4 +12,5 @@ public class UserDto {
   private String phone;
   private String address;
   private String imageUrl;
+  private List<String> roles;
 }
