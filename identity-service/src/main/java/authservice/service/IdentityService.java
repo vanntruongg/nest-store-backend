@@ -36,4 +36,5 @@ public interface IdentityService {
   Boolean addAddress(String address);
 
   Boolean logout(HttpServletRequest request, HttpServletResponse response);
+
 }

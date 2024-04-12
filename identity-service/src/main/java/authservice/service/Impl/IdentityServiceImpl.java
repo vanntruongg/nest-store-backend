@@ -9,6 +9,7 @@ import authservice.entity.User;
 import authservice.entity.dto.*;
 import authservice.enums.AccountStatus;
 import authservice.enums.TokenType;
+import authservice.enums.UserRole;
 import authservice.exception.*;
 import authservice.repository.UserCredentialRepository;
 import authservice.security.JwtService;
@@ -173,14 +174,20 @@ public class IdentityServiceImpl implements IdentityService {
   @Override
   @Transactional
   public Boolean updateUser(UserDto userDto) {
+    List<String> accountRoles = securityContextHelper.getRoles();
+
     User user = getUserByEmail(userDto.getEmail());
 
     user.setFirstName(userDto.getFirstName());
     user.setLastName(userDto.getLastName());
     user.setAddress(userDto.getAddress());
     user.setPhone(userDto.getPhone());
-    user.setImageUrl(user.getImageUrl());
+    user.setImageUrl(userDto.getImageUrl());
 
+    // if list role not empty and account update is admin
+    if(!userDto.getRoles().isEmpty() && accountRoles.contains(UserRole.ADMIN.getRole())) {
+      user.setRoles(userDto.getRoles());
+    }
     repository.save(user);
     return true;
   }
