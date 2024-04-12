@@ -24,7 +24,7 @@ public class CartController {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
-            .data(cartService.findById(email))
+            .data(cartService.findByIdOrCreate(email))
             .build());
   }
 
