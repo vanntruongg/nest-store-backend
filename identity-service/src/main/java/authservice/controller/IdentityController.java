@@ -134,7 +134,7 @@ public class IdentityController {
             .build());
   }
 
-  @PostMapping(DELETE_USER)
+  @DeleteMapping(DELETE_USER)
   public ResponseEntity<CommonResponse<Object>> deleteUser(@PathVariable("email") String email) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
@@ -142,6 +142,5 @@ public class IdentityController {
             .data(identityService.deleteUser(email))
             .build());
   }
-
 
 }
