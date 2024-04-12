@@ -10,6 +10,7 @@ public class ApiEndpoint {
   public static final String LOGOUT = "/logout";
   public static final String REGISTER = "/register";
 
+  public static final String ADMIN = "/admin";
   public static final String USER = "/user";
   public static final String GET = "/get";
   public static final String UPDATE = "/update";
@@ -33,4 +34,5 @@ public class ApiEndpoint {
   public static final String GET_PROFILE = "/profile";;
   public static final String UPDATE_PHONE = UPDATE + PHONE + PHONE_PARAM;
   public static final String UPDATE_ADDRESS = UPDATE + ADDRESS + ADDRESS_PARAM;
+  public static final String ADMIN_UPDATE = ADMIN + UPDATE;
 }
