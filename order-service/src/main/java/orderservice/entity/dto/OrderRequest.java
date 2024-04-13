@@ -7,6 +7,8 @@ import java.util.List;
 @Getter
 public class OrderRequest {
   private String email;
+  private String name;
+  private String receiver;
   private String phone;
   private String address;
   private float totalPrice;
