@@ -20,10 +20,13 @@ public class Order extends BaseEntity {
   @Column(name = "email")
   private String email;
 
+  @Column(name = "name")
+  private String name;
+
   @Column(name = "o_phone")
   private String phone;
 
-  @Column(name = "o_shipping_address")
+  @Column(name = "o_address")
   private String address;
 
   @Column(name = "o_notes")
