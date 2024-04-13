@@ -18,4 +18,6 @@ public interface OrderService {
   List<OrderDto> getOrderByEmail(String email);
 
   OrderDto getOrderById(int id);
+
+  Boolean updateStatus(int id, String status);
 }

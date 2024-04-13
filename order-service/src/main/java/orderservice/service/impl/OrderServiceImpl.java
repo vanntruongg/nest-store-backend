@@ -1,6 +1,7 @@
 package orderservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import orderservice.constant.MessageConstant;
 import orderservice.entity.Order;
 import orderservice.entity.OrderDetail;
 import orderservice.entity.PaymentMethod;
@@ -29,6 +30,10 @@ public class OrderServiceImpl implements OrderService {
   public List<OrderDto> getAllOrder() {
     List<Order> orders = orderRepository.findAll();
     return convertToListOrderDto(orders);
+  }
+
+  private Order findById(int id) {
+    return orderRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.ORDER_NOT_FOUND));
   }
 
   @Override
@@ -86,11 +91,21 @@ public class OrderServiceImpl implements OrderService {
     return convertToOrderDto(order, orderDetails);
   }
 
+  @Override
+  @Transactional
+  public Boolean updateStatus(int id, String status) {
+      Order order = findById(id);
+      order.setOrderStatus(OrderStatus.getOrderStatus(status));
+      orderRepository.save(order);
+      return true;
+  }
+
 
   private OrderDto convertToOrderDto(Order order, List<OrderDetail> orderDetail) {
     return OrderDto.builder()
             .orderId(order.getOrderId())
             .email(order.getEmail())
+            .name(order.getName())
             .phone(order.getPhone())
             .address(order.getAddress())
             .notes(order.getNotes())
