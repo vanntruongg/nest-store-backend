@@ -70,4 +70,15 @@ public class OrderController {
             .data(orderService.getOrderByEmailAndStatus(email, status))
             .build());
   }
+
+  @PostMapping(UPDATE_STATUS)
+  public ResponseEntity<CommonResponse<Object>> updateStatus(
+          @RequestParam("id") int id,
+          @RequestParam("status") String status) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.UPDATE_SUCCESS)
+            .data(orderService.updateStatus(id, status))
+            .build());
+  }
 }
