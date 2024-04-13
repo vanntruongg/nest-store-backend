@@ -3,6 +3,8 @@ package orderservice.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.stream.Stream;
+
 @Getter
 @AllArgsConstructor
 public enum OrderStatus {
@@ -16,5 +18,12 @@ public enum OrderStatus {
 
   public String getName() {
     return this.orderStatus;
+  }
+
+  public static OrderStatus findOrderStatus(String stt) {
+    return Stream.of(OrderStatus.values())
+            .filter(status -> status.name().equals(stt))
+            .findFirst()
+            .orElseThrow(IllegalAccessError::new);
   }
 }
