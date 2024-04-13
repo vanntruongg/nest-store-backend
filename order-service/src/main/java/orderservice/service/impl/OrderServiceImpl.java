@@ -95,7 +95,7 @@ public class OrderServiceImpl implements OrderService {
   @Transactional
   public Boolean updateStatus(int id, String status) {
       Order order = findById(id);
-      order.setOrderStatus(OrderStatus.getOrderStatus(status));
+      order.setOrderStatus(OrderStatus.findOrderStatus(status));
       orderRepository.save(order);
       return true;
   }
