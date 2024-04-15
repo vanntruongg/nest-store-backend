@@ -10,7 +10,7 @@ import java.util.List;
 public interface OrderService {
   List<OrderDto> getAllOrder();
 
-  Boolean createOrder(OrderRequest orderRequest);
+  OrderRequest createOrder(OrderRequest orderRequest);
 
   List<OrderDto> getOrderByStatus(String status);
   List<OrderDto> getOrderByEmailAndStatus(String email, String status);

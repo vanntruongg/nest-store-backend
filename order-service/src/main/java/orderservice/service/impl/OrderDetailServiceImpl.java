@@ -62,6 +62,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
             .productName(orderDetailDto.getProductName())
             .quantity(orderDetailDto.getQuantity())
             .productPrice(orderDetailDto.getProductPrice())
+            .productImage(orderDetailDto.getProductImage())
             .build();
   }
 }

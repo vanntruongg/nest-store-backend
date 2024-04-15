@@ -38,11 +38,12 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   @Transactional
-  public Boolean createOrder(OrderRequest orderRequest) {
+  public OrderRequest createOrder(OrderRequest orderRequest) {
     PaymentMethod paymentMethod = paymentMethodService.getPaymentMethodById(orderRequest.getPaymentMethodId());
 
     Order newOrder = Order.builder()
             .email(orderRequest.getEmail())
+            .name(orderRequest.getName())
             .phone(orderRequest.getPhone())
             .address(orderRequest.getAddress())
             .totalPrice(orderRequest.getTotalPrice())
@@ -53,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     orderRepository.save(newOrder);
     orderDetailService.createOrderDetails(newOrder, orderRequest.getListProduct());
 
-    return true;
+    return orderRequest;
   }
 
   @Override
