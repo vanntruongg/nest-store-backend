@@ -20,8 +20,18 @@ public class CategoryServiceImpl implements CategoryService {
   private final CategoryRepository categoryRepository;
 
   @Override
-  public List<Category> getTopLevelCategory() {
-    return categoryRepository.findTopLevelCategory();
+  public List<CategoryResponse> getTopLevelCategory() {
+    List<Category> categories = categoryRepository.findTopLevelCategory();
+    List<CategoryResponse> result = new ArrayList<>();
+    for (Category category: categories) {
+      List<CategoryResponse> categoryResponses = getAllLevelChildrenByCategory(category.getId());
+      CategoryResponse categoryResponse = CategoryResponse.builder()
+              .category(category)
+              .subCategories(categoryResponses)
+              .build();
+      result.add(categoryResponse);
+    }
+    return result;
   }
 
   @Override

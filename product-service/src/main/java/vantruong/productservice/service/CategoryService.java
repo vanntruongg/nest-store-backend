@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CategoryService {
-  List<Category> getTopLevelCategory();
+  List<CategoryResponse> getTopLevelCategory();
 
   List<Category> getSubCategoriesByParentId(int parentId);
   Optional<Category> getParentCategoryByCategoryId(int categoryId);

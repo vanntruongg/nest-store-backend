@@ -23,6 +23,9 @@ public class Category extends BaseEntity {
   @Column(name = "cat_name")
   private String name;
 
+  @Column(name = "cat_image")
+  private String image;
+
   @ManyToOne
   @JoinColumn(name = "parent_cat_id")
   @JsonIgnore
