@@ -70,7 +70,6 @@ public class ProductServiceImpl implements ProductService {
 
   /**
    * recursion func
-   *
    * @param id
    * @return
    */
@@ -113,16 +112,19 @@ public class ProductServiceImpl implements ProductService {
   @Override
   public Product createProduct(ProductDto productDto) {
     Category category = categoryService.getCategoryById(productDto.getCategoryId());
-
-    Product product = Product.builder()
-            .name(productDto.getName())
-            .price(productDto.getPrice())
-            .material(productDto.getMaterial())
-            .style(productDto.getStyle())
-            .imageUrl(productDto.getImageUrl())
-            .category(category)
-            .build();
+    Product product = new Product();
+    convertProductDtoToProduct(product, productDto);
+    product.setCategory(category);
     return productRepository.save(product);
+  }
+
+  private void convertProductDtoToProduct(Product product, ProductDto productDto) {
+    product.setName(productDto.getName());
+    product.setPrice(productDto.getPrice());
+    product.setMaterial(productDto.getMaterial());
+    product.setStyle(productDto.getStyle());
+    product.setImageUrl(productDto.getImageUrl());
+    product.setStock(productDto.getStock());
   }
 
   /**
@@ -145,6 +147,7 @@ public class ProductServiceImpl implements ProductService {
   @Transactional
   public CommonResponse<Object> updateProductQuantityByOrder(Map<Integer, Integer> stockUpdate) {
     List<String> errorMessages = new ArrayList<>();
+    List<Product> products = new ArrayList<>();
     for (Map.Entry<Integer, Integer> productIdAndQuantity : stockUpdate.entrySet()) {
       int productId = productIdAndQuantity.getKey();
       int quantity = productIdAndQuantity.getValue();
@@ -155,11 +158,12 @@ public class ProductServiceImpl implements ProductService {
         errorMessages.add("Insufficient quantity for product with Id: " + productId);
       } else {
         product.setStock(newQuantity);
-        productRepository.save(product);
+        products.add(product);
       }
+      productRepository.saveAll(products);
     }
 
-    if(!errorMessages.isEmpty()) {
+    if (!errorMessages.isEmpty()) {
       return CommonResponse.builder()
               .isSuccess(false)
               .message(Utils.formatErrorMessage(errorMessages))
@@ -170,5 +174,20 @@ public class ProductServiceImpl implements ProductService {
             .isSuccess(true)
             .message(MessageConstant.UPDATE_QUANTITY_SUCCESS)
             .build();
+  }
+
+  @Override
+  public Boolean updateProduct(ProductDto productDto) {
+    Product product = getProductById(productDto.getId());
+    Category category = categoryService.getCategoryById(productDto.getCategoryId());
+    convertProductDtoToProduct(product, productDto);
+    product.setCategory(category);
+    productRepository.save(product);
+    return true;
+  }
+
+  @Override
+  public List<Product> getAll() {
+    return productRepository.findAll();
   }
 }

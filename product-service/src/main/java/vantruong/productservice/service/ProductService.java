@@ -26,4 +26,8 @@ public interface ProductService {
   int getStockById(int id);
 
   CommonResponse<Object> updateProductQuantityByOrder(Map<Integer, Integer> stockUpdate);
+
+  Boolean updateProduct(ProductDto productDto);
+
+  List<Product> getAll();
 }

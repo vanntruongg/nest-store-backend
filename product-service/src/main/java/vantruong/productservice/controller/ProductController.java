@@ -11,6 +11,7 @@ import vantruong.productservice.service.ProductService;
 import java.util.Map;
 
 import static vantruong.productservice.constant.ApiEndpoint.*;
+import static vantruong.productservice.constant.MessageConstant.UPDATE;
 
 
 @RestController
@@ -27,6 +28,15 @@ public class ProductController {
             .build());
   }
 
+  @GetMapping(GET_ALL)
+  public ResponseEntity<CommonResponse<Object>> getAll() {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(productService.getAll())
+            .build());
+  }
+
   @GetMapping(PRODUCTS)
   public ResponseEntity<CommonResponse<Object>> getAllProduct(
           @RequestParam(name = "category", defaultValue = "0") int categoryId,
@@ -37,6 +47,15 @@ public class ProductController {
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
             .data(productService.getAllProduct(categoryId, order, pageNo))
+            .build());
+  }
+
+  @PostMapping(UPDATE_PRODUCT)
+  public ResponseEntity<CommonResponse<Object>> updateProduct(@RequestBody ProductDto productDto) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.UPDATE_SUCCESS)
+            .data(productService.updateProduct(productDto))
             .build());
   }
 
