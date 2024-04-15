@@ -195,7 +195,8 @@ public class IdentityServiceImpl implements IdentityService {
   @Override
   @Transactional
   public Boolean changePassword(ChangePasswordRequest changePasswordRequest) {
-    User user = getUserByEmail(changePasswordRequest.getEmail());
+    String email = securityContextHelper.getUserId();
+    User user = getUserByEmail(email);
 
     if (passwordEncoder.matches(changePasswordRequest.getOldPassword(), user.getPassword())) {
       user.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
