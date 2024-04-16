@@ -15,4 +15,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
   List<Order> findOrderByEmailAndOrderStatus(String email, OrderStatus status);
 
   List<Order> findAllByEmail(String email);
+
+  @Query("select o.orderStatus, count(o) from Order o group by o.orderStatus")
+  List<Object[]> findOrderCountByStatus();
 }

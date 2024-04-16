@@ -81,4 +81,14 @@ public class OrderController {
             .data(orderService.updateStatus(id, status))
             .build());
   }
+
+  @GetMapping(GET_TOTAL_ORDER)
+  public ResponseEntity<CommonResponse<Object>> getTotalOrderCountByStatus() {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(orderService.getTotalOrderCountByStatus())
+            .build());
+  }
+
 }

@@ -29,6 +29,7 @@ public class ApiEndpoint {
   public static final String GET_BY_EMAIL_AND_STATUS = GET + EMAIL + STATUS;
   public static final String GET_BY_ID = GET + ID_PARAM;
   public static final String UPDATE_STATUS = UPDATE + STATUS;
+  public static final String GET_TOTAL_ORDER = "/total-order";
 
   //
 

@@ -17,7 +17,9 @@ import orderservice.service.PaymentMethodService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -95,10 +97,20 @@ public class OrderServiceImpl implements OrderService {
   @Override
   @Transactional
   public Boolean updateStatus(int id, String status) {
-      Order order = findById(id);
-      order.setOrderStatus(OrderStatus.findOrderStatus(status));
-      orderRepository.save(order);
-      return true;
+    Order order = findById(id);
+    order.setOrderStatus(OrderStatus.findOrderStatus(status));
+    orderRepository.save(order);
+    return true;
+  }
+
+  @Override
+  public Map<OrderStatus, Long> getTotalOrderCountByStatus() {
+    List<Object[]> results = orderRepository.findOrderCountByStatus();
+    Map<OrderStatus, Long> orderCountByStatus = new HashMap<>();
+    for (Object[] result : results) {
+      orderCountByStatus.put((OrderStatus) result[0], (Long) result[1]);
+    }
+    return orderCountByStatus;
   }
 
 
