@@ -38,4 +38,6 @@ public interface IdentityService {
   Boolean logout(HttpServletRequest request, HttpServletResponse response);
 
   Long getUserCount();
+
+  Boolean requestVerifyAccount(String email);
 }

@@ -112,6 +112,16 @@ public class IdentityServiceImpl implements IdentityService {
   }
 
   @Override
+  public Boolean requestVerifyAccount(String email) {
+    Token token = Utils.generateTokenVerify();
+    User user = getUserByEmail(email);
+    user.setTokens(List.of(token));
+    sendVerificationEmail(user, token.getTokenValue());
+    repository.save(user);
+    return true;
+  }
+
+  @Override
   public Boolean processVerifyEmail(String tokenValue) {
     User user = repository.findByTokens_TokenValue(tokenValue)
             .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.USER_NOT_FOUND));

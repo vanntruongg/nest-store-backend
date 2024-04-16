@@ -45,8 +45,17 @@ public class IdentityController {
   public ResponseEntity<CommonResponse<Object>> verifyEmail(@RequestParam(value = "token") String token) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
-            .message(MessageConstant.LOGIN_SUCCESS)
+            .message(MessageConstant.VERIFY_SUCCESS)
             .data(identityService.processVerifyEmail(token))
+            .build());
+  }
+
+  @PostMapping(REQUEST_VERIFY)
+  public ResponseEntity<CommonResponse<Object>> requestVerifyAccount(@RequestParam("email") String email) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.REQUEST_VERIFY_SUCCESS)
+            .data(identityService.requestVerifyAccount(email))
             .build());
   }
 
