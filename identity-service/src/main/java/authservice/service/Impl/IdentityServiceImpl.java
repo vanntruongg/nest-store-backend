@@ -260,4 +260,9 @@ public class IdentityServiceImpl implements IdentityService {
     return false;
   }
 
+  @Override
+  public int getUserCount() {
+    return repository.findAll().size();
+  }
+
 }

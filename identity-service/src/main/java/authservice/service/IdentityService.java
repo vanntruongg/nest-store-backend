@@ -37,4 +37,5 @@ public interface IdentityService {
 
   Boolean logout(HttpServletRequest request, HttpServletResponse response);
 
+  int getUserCount();
 }

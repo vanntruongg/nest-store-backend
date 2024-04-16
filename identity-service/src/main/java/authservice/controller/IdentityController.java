@@ -142,5 +142,12 @@ public class IdentityController {
             .data(identityService.deleteUser(email))
             .build());
   }
-
+  @GetMapping(COUNT_USER)
+  public ResponseEntity<CommonResponse<Object>> getUserCount() {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(identityService.getUserCount())
+            .build());
+  }
 }

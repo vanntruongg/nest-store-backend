@@ -15,6 +15,8 @@ public class ApiEndpoint {
   public static final String GET = "/get";
   public static final String UPDATE = "/update";
   public static final String DELETE = "/delete";
+  public static final String COUNT = "/count";
+  public static final String COUNT_USER = USER + COUNT;
   public static final String CHANGE_PASSWORD = "/change-password";
 
   public static final String EMAIL = "/email";
