@@ -11,7 +11,6 @@ import vantruong.productservice.service.ProductService;
 import java.util.Map;
 
 import static vantruong.productservice.constant.ApiEndpoint.*;
-import static vantruong.productservice.constant.MessageConstant.UPDATE;
 
 
 @RestController
@@ -95,6 +94,15 @@ public class ProductController {
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
             .data(productService.findProductByName(name, limit))
+            .build());
+  }
+
+  @GetMapping(COUNT_PRODUCT)
+  public ResponseEntity<CommonResponse<Object>> getProductCount() {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(productService.getProductCount())
             .build());
   }
 

@@ -15,6 +15,7 @@ public class ApiEndpoint {
   public static final String GET = "/get";
   public static final String CREATE = "/create";
   public static final String UPDATE = "/update";
+  public static final String COUNT_PRODUCT = "/count";
 
   public static final String PRODUCT = "/product";
   public static final String STOCK = "/stock";

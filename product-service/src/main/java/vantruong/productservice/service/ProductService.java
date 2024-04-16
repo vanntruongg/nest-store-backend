@@ -30,4 +30,6 @@ public interface ProductService {
   Boolean updateProduct(ProductDto productDto);
 
   List<Product> getAll();
+
+  int getProductCount();
 }
