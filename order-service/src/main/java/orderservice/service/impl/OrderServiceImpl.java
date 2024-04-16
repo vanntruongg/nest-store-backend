@@ -104,11 +104,11 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public Map<OrderStatus, Long> getTotalOrderCountByStatus() {
+  public Map<String, Long> getTotalOrderCountByStatus() {
     List<Object[]> results = orderRepository.findOrderCountByStatus();
-    Map<OrderStatus, Long> orderCountByStatus = new HashMap<>();
+    Map<String, Long> orderCountByStatus = new HashMap<>();
     for (Object[] result : results) {
-      orderCountByStatus.put((OrderStatus) result[0], (Long) result[1]);
+      orderCountByStatus.put(((OrderStatus) result[0]).getOrderStatus(), (Long) result[1]);
     }
     return orderCountByStatus;
   }

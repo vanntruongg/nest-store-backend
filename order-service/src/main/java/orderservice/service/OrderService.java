@@ -23,5 +23,5 @@ public interface OrderService {
 
   Boolean updateStatus(int id, String status);
 
-  Map<OrderStatus, Long> getTotalOrderCountByStatus();
+  Map<String, Long> getTotalOrderCountByStatus();
 }
