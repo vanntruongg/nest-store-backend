@@ -91,4 +91,13 @@ public class OrderController {
             .build());
   }
 
+  @GetMapping("/count/month")
+  public ResponseEntity<CommonResponse<Object>> getCountOrderByMonth() {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(orderService.getCountOrderByMonth())
+            .build());
+  }
+
 }

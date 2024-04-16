@@ -28,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
   private final OrderDetailService orderDetailService;
   private final PaymentMethodService paymentMethodService;
 
+  private static final int MONTH_IN_YEAR = 12;
   @Override
   public List<OrderDto> getAllOrder() {
     List<Order> orders = orderRepository.findAll();
@@ -74,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
   public List<OrderDto> getOrderByEmailAndStatus(String email, String status) {
     try {
       OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
-      List<Order> orders = orderRepository.findOrderByEmailAndOrderStatus(email, orderStatus);
+      List<Order> orders = orderRepository.findOrderByEmailAndOrderStatusOrderByCreatedDateDesc(email, orderStatus);
       return convertToListOrderDto(orders);
     } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException("Invalid order status: " + status);
@@ -83,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   public List<OrderDto> getOrderByEmail(String email) {
-    List<Order> orders = orderRepository.findAllByEmail(email);
+    List<Order> orders = orderRepository.findAllByEmailOrderByCreatedDateDesc(email);
     return convertToListOrderDto(orders);
   }
 
@@ -111,6 +112,28 @@ public class OrderServiceImpl implements OrderService {
       orderCountByStatus.put(((OrderStatus) result[0]).getOrderStatus(), (Long) result[1]);
     }
     return orderCountByStatus;
+  }
+
+  @Override
+  public Map<Integer, Integer> getCountOrderByMonth() {
+    List<Object[]> results = orderRepository.countOrderByMonth();
+    Map<Integer, Integer> orderCountByMonth = new HashMap<>();
+
+    // initial the order for each month to 0
+    for (int i = 1; i <= MONTH_IN_YEAR; i++) {
+      orderCountByMonth.put(i, 0);
+    }
+
+    // iterate through the results update the order count by month
+    for (Object[] result : results) {
+      int month = (int) result[0];
+      int count = ((Number) result[1]).intValue();
+
+      // update the order count for the corresponding month in the map
+      orderCountByMonth.put(month, count);
+    }
+
+    return orderCountByMonth;
   }
 
 

@@ -12,10 +12,16 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
   List<Order> findOrderByOrderStatus(OrderStatus status);
 
-  List<Order> findOrderByEmailAndOrderStatus(String email, OrderStatus status);
+  List<Order> findOrderByEmailAndOrderStatusOrderByCreatedDateDesc(String email, OrderStatus status);
 
-  List<Order> findAllByEmail(String email);
+  List<Order> findAllByEmailOrderByCreatedDateDesc(String email);
 
   @Query("select o.orderStatus, count(o) from Order o group by o.orderStatus")
   List<Object[]> findOrderCountByStatus();
+
+  @Query("select extract(month from o.createdDate), count(*) " +
+          "from Order o " +
+          "where extract(year from o.createdDate) = extract(year from current_date )" +
+          "group by extract(month from o.createdDate)")
+  List<Object[]> countOrderByMonth();
 }
