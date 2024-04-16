@@ -31,5 +31,5 @@ public interface ProductService {
 
   List<Product> getAll();
 
-  int getProductCount();
+  Long getProductCount();
 }

@@ -21,4 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer>, Pagi
 
   List<Product> findProductByNameContainingIgnoreCase(String name, Limit limit);
 
+  @Query("select count(p) from Product p")
+  Long getProductCount();
+
 }

@@ -192,7 +192,7 @@ public class ProductServiceImpl implements ProductService {
   }
 
   @Override
-  public int getProductCount() {
-    return getAll().size();
+  public Long getProductCount() {
+    return productRepository.getProductCount();
   }
 }
