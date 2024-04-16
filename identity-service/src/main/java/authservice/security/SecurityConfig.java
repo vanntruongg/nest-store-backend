@@ -41,7 +41,7 @@ public class SecurityConfig {
             .exceptionHandling(exception -> exception
                     .authenticationEntryPoint(authEntryPointJwt))
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/auth/register", "/auth/login", "/auth/verify-email", "/auth/refresh-token").permitAll()
+                    .requestMatchers("/auth/register", "/auth/login", "/auth/verify-email", "/auth/refresh-token", "/auth/request/verify").permitAll()
                     .anyRequest().authenticated()
             )
             .sessionManagement(session ->
