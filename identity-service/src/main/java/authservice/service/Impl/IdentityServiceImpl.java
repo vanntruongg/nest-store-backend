@@ -261,8 +261,8 @@ public class IdentityServiceImpl implements IdentityService {
   }
 
   @Override
-  public int getUserCount() {
-    return repository.findAll().size();
+  public Long getUserCount() {
+    return repository.count();
   }
 
 }
