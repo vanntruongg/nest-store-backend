@@ -26,6 +26,7 @@ public class MessageConstant {
   public static final String EMAIL = "Email";
   public static final String EXISTED = "tồn tại";
   public static final String NOT_FOUND = "không tìm thấy!";
+  private static final String VERIFY = "Xác minh tài khoản";
   public static final String EMAIL_EXISTED = "Email đã tồn tại!";
   public static final String USER = "Người dùng";
   public static final String CHANGE_PASSWORD = "Thay đổi mật khẩu";
@@ -45,4 +46,6 @@ public class MessageConstant {
   public static final String UNVERIFIED_ACCOUNT = "Tài khoản chưa được xác minh!";
   public static final String PASSWORD_INCORRECT = "Mật khẩu không chính xác.";
   public static final String LOGOUT_SUCCESS = String.format(CHAR_SEQUENCE_2, LOGOUT, SUCCESS);
+  public static final String VERIFY_SUCCESS = String.format(CHAR_SEQUENCE_2, VERIFY, SUCCESS);
+  public static final String REQUEST_VERIFY_SUCCESS = "Yêu cầu xác minh tài khoản thành công.";
 }

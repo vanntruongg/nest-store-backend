@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 public class CommonConstant {
 
   public static final String BASE_URL_CLIENT = "http://localhost:3000";
-  public static final String VERIFY_EMAIL = "/verify-email";
+  public static final String VERIFY_EMAIL = "/process-verify-email";
 
 }

@@ -37,4 +37,5 @@ public class ApiEndpoint {
   public static final String UPDATE_PHONE = UPDATE + PHONE + PHONE_PARAM;
   public static final String UPDATE_ADDRESS = UPDATE + ADDRESS + ADDRESS_PARAM;
   public static final String ADMIN_UPDATE = ADMIN + UPDATE;
+  public static final String REQUEST_VERIFY = "/request/verify";
 }
