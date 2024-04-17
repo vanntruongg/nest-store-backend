@@ -60,7 +60,11 @@ public class IdentityServiceImpl implements IdentityService {
 
     // check if user has verified the account
     if (!userPrincipal.isVerified()) {
-      throw new UnVerifiedAccountException(ErrorCode.DENIED, MessageConstant.UNVERIFIED_ACCOUNT);
+      throw new UnVerifiedAccountException(ErrorCode.DENIED, MessageConstant.UNVERIFIED_ACCOUNT,  new Throwable("unVerify"));
+    }
+
+    if(!userPrincipal.isActive()) {
+      throw new AccountUnAvailableException(ErrorCode.DENIED, MessageConstant.ACCOUNT_UNAVAILABLE, new Throwable("unAvailable"));
     }
 
     String accessToken = jwtService.generateAccessToken(userPrincipal);
