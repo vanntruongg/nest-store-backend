@@ -75,18 +75,19 @@ public class ProductServiceImpl implements ProductService {
    */
   @Override
   public List<Product> getAllProductByCategoryId(int id) {
-    List<Category> categories = categoryService.getSubCategoriesByParentId(id);
-
-    if (categories.isEmpty()) {
-      return productRepository.findAllByCategoryId(id);
-    } else {
-      List<Product> productList = new ArrayList<>();
-      for (Category category : categories) {
-        List<Product> products = getAllProductByCategoryId(category.getId());
-        productList.addAll(products);
-      }
-      return productList;
-    }
+//    List<Category> categories = categoryService.getSubCategoriesByParentId(id);
+//
+//    if (categories.isEmpty()) {
+//      return productRepository.findAllByCategoryId(id);
+//    } else {
+//      List<Product> productList = new ArrayList<>();
+//      for (Category category : categories) {
+//        List<Product> products = getAllProductByCategoryId(category.getId());
+//        productList.addAll(products);
+//      }
+//      return productList;
+//    }
+    return productRepository.findAllByCategoryAndSubcategories(id);
   }
 
   /**
