@@ -1,6 +1,7 @@
 package authservice.security;
 
 import authservice.entity.User;
+import authservice.enums.AccountStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,10 @@ public class UserDetailsImpl implements UserDetails {
 
   public Boolean isVerified() {
     return user.isVerify();
+  }
+
+  public Boolean isActive() {
+    return user.getStatus().equals(AccountStatus.ACTIVE);
   }
 
   @Override
