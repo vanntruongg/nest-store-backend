@@ -42,6 +42,16 @@ public class RestResponseEntityExceptionHandler {
             .build());
   }
 
+  @ExceptionHandler(value = {AccountUnAvailableException.class})
+  public ResponseEntity<CommonResponse<Object>> handleAccountUnAvailable(Exception ex, WebRequest request) {
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(CommonResponse.builder()
+            .isSuccess(false)
+            .message(ex.getMessage())
+            .errorDetails(ex.getCause() != null ? ex.getCause().getMessage() : StringUtils.EMPTY)
+            .build());
+  }
+
+
   @ExceptionHandler(value = {OldPasswordNotMatches.class})
   public ResponseEntity<CommonResponse<Object>> handleOldPasswordNotMatches(Exception ex, WebRequest request) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CommonResponse.builder()
