@@ -14,6 +14,8 @@ public class RouteValidator {
           "/auth/login",
           "/auth/verify-email",
           "/auth/request/verify",
+          "/auth/forgot-password",
+          "/auth/reset-password",
           "/eureka"
   );
 
