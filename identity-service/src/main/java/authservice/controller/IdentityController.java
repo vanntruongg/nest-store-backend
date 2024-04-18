@@ -59,6 +59,24 @@ public class IdentityController {
             .build());
   }
 
+  @PostMapping(FORGOT_PASSWORD)
+  public ResponseEntity<CommonResponse<Object>> requestForgotPassword(@RequestParam("email") String email) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.REQUEST_RESET_PASSWORD_SUCCESS)
+            .data(identityService.requestForgotPassword(email))
+            .build());
+  }
+
+  @PostMapping(RESET_PASSWORD)
+  public ResponseEntity<CommonResponse<Object>> resetPassword(@RequestBody ResetPasswordRequest request) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.RESET_PASSWORD_SUCCESS)
+            .data(identityService.resetPassword(request))
+            .build());
+  }
+
   @PostMapping(REFRESH_TOKEN)
   public ResponseEntity<CommonResponse<Object>> refreshToken(@RequestBody @Valid RefreshTokenRequest request) {
     try {

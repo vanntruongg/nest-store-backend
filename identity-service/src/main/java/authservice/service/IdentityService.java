@@ -14,6 +14,7 @@ public interface IdentityService {
   LoginResponse login(LoginRequest request);
 
   void sendVerificationEmail(User user, String token);
+  void sendForgotPassword(User user, String token);
 
   Boolean processVerifyEmail(String token);
 
@@ -40,4 +41,8 @@ public interface IdentityService {
   Long getUserCount();
 
   Boolean requestVerifyAccount(String email);
+
+  Boolean requestForgotPassword(String email);
+
+  Boolean resetPassword(ResetPasswordRequest request);
 }

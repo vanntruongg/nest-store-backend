@@ -60,10 +60,10 @@ public class IdentityServiceImpl implements IdentityService {
 
     // check if user has verified the account
     if (!userPrincipal.isVerified()) {
-      throw new UnVerifiedAccountException(ErrorCode.DENIED, MessageConstant.UNVERIFIED_ACCOUNT,  new Throwable("unVerify"));
+      throw new UnVerifiedAccountException(ErrorCode.DENIED, MessageConstant.UNVERIFIED_ACCOUNT, new Throwable("unVerify"));
     }
 
-    if(!userPrincipal.isActive()) {
+    if (!userPrincipal.isActive()) {
       throw new AccountUnAvailableException(ErrorCode.DENIED, MessageConstant.ACCOUNT_UNAVAILABLE, new Throwable("unAvailable"));
     }
 
@@ -80,10 +80,10 @@ public class IdentityServiceImpl implements IdentityService {
   public Boolean register(RegisterRequest userDto) {
     try {
       if (repository.existsByEmail(userDto.getEmail())) {
-        throw new DuplicationException(ErrorCode.NOT_NULL, MessageConstant.EMAIL_EXISTED);
+        throw new FormException(ErrorCode.NOT_NULL, MessageConstant.EMAIL_EXISTED, new Throwable("email"));
       }
 
-      Token tokenVerifyUser = Utils.generateTokenVerify();
+      Token tokenVerifyUser = Utils.generateToken(TokenType.VERIFICATION);
 
       User newUser = User.builder()
               .email(userDto.getEmail())
@@ -116,8 +116,18 @@ public class IdentityServiceImpl implements IdentityService {
   }
 
   @Override
+  public void sendForgotPassword(User user, String token) {
+    SendMailVerifyUserRequest request = SendMailVerifyUserRequest.builder()
+            .email(user.getEmail())
+            .name(user.getFirstName())
+            .token(token)
+            .build();
+    restTemplate.postForLocation(CommonConstant.EMAIL_URL + "/mail/forgot-password", request);
+  }
+
+  @Override
   public Boolean requestVerifyAccount(String email) {
-    Token token = Utils.generateTokenVerify();
+    Token token = Utils.generateToken(TokenType.VERIFICATION);
     User user = getUserByEmail(email);
     user.setTokens(List.of(token));
     sendVerificationEmail(user, token.getTokenValue());
@@ -126,9 +136,58 @@ public class IdentityServiceImpl implements IdentityService {
   }
 
   @Override
-  public Boolean processVerifyEmail(String tokenValue) {
-    User user = repository.findByTokens_TokenValue(tokenValue)
+  public Boolean requestForgotPassword(String email) {
+    Token token = Utils.generateToken(TokenType.RESET_PASSWORD);
+    User user = getUserByEmail(email);
+
+    List<Token> tokens = user.getTokens();
+    tokens.add(token);
+
+    user.setTokens(tokens);
+    sendForgotPassword(user, token.getTokenValue());
+    repository.save(user);
+    return true;
+  }
+
+  private User findByToken(String token) {
+    return repository.findByTokens_TokenValue(token)
             .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.USER_NOT_FOUND));
+  }
+
+  @Override
+  public Boolean resetPassword(ResetPasswordRequest request) {
+    User user = findByToken(request.getToken());
+
+    List<Token> tokens = user.getTokens();
+    Iterator<Token> iterator = tokens.iterator();
+
+    boolean tokenFound = false;
+
+    while (iterator.hasNext()) {
+      Token token = iterator.next();
+      if (TokenType.RESET_PASSWORD.getTokenType().equals(token.getTokenType())) {
+        if (LocalDateTime.now().isBefore(token.getExpiredDate())) {
+          user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+          iterator.remove();
+          tokenFound = true;
+        } else {
+          iterator.remove();
+          throw new ExpiredException(ErrorCode.EXPIRED, MessageConstant.EXPIRED_TOKEN);
+        }
+      }
+    }
+    if (!tokenFound) {
+      throw new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.INVALID_TOKEN);
+    }
+
+    user.setTokens(tokens);
+    repository.save(user);
+    return true;
+  }
+
+  @Override
+  public Boolean processVerifyEmail(String tokenValue) {
+    User user = findByToken(tokenValue);
 
     List<Token> tokens = user.getTokens();
     Iterator<Token> iterator = tokens.iterator();
@@ -144,13 +203,13 @@ public class IdentityServiceImpl implements IdentityService {
           tokenFound = true;
         } else {
           iterator.remove();
-          throw new ExpiredException(ErrorCode.EXPIRED, MessageConstant.EXPIRED_TOKEN_VERIFICATION);
+          throw new ExpiredException(ErrorCode.EXPIRED, MessageConstant.EXPIRED_TOKEN);
         }
       }
     }
 
     if (!tokenFound) {
-      throw new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.INVALID_TOKEN_VERIFICATION);
+      throw new NotFoundException(ErrorCode.NOT_FOUND, MessageConstant.INVALID_TOKEN);
     }
 
     user.setTokens(tokens);
@@ -199,7 +258,7 @@ public class IdentityServiceImpl implements IdentityService {
     user.setImageUrl(userDto.getImageUrl());
 
     // if list role not empty and account update is admin
-    if(!userDto.getRoles().isEmpty() && accountRoles.contains(UserRole.ADMIN.getRole())) {
+    if (!userDto.getRoles().isEmpty() && accountRoles.contains(UserRole.ADMIN.getRole())) {
       user.setRoles(userDto.getRoles());
     }
     repository.save(user);
