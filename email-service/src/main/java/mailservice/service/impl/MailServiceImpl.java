@@ -16,6 +16,7 @@ import mailservice.service.MailService;
 import java.util.HashMap;
 import java.util.Map;
 
+import static mailservice.constant.EmailConstant.RESET_PASSWORD;
 import static mailservice.constant.EmailConstant.VERIFY_EMAIL;
 
 @Service
@@ -30,20 +31,6 @@ public class MailServiceImpl implements MailService {
   private void jobSendMail(String from, String to, String subject, String htmlBody, JavaMailSender javaMailSender) {
     Thread job = new SendMailJob(from, to, subject, htmlBody, javaMailSender);
     job.start();
-  }
-
-  @Override
-  public void senMail(UserDto userDto) {
-    Context context = new Context();
-    Map<String, Object> templateModel = new HashMap<>();
-    templateModel.put("name", userDto.getName());
-
-    context.setVariables(templateModel);
-
-    String subject = "Verify email";
-    String htmlBody = templateEngine.process(VERIFY_EMAIL, context);
-
-    jobSendMail(systemEmail, userDto.getEmail(), subject, htmlBody, javaMailSender);
   }
 
   @Override
@@ -64,6 +51,28 @@ public class MailServiceImpl implements MailService {
 
     String subject = "Verify email";
     String htmlBody = templateEngine.process(VERIFY_EMAIL, context);
+
+    jobSendMail(systemEmail, request.getEmail(), subject, htmlBody, javaMailSender);
+  }
+
+  @Override
+  public void sendResetPassword(SendMailVerifyUserRequest request) {
+    Context context = new Context();
+
+    String urlResetPassword = UriComponentsBuilder
+            .fromHttpUrl(CommonConstant.BASE_URL_CLIENT)
+            .path(CommonConstant.RESET_PASSWORD)
+            .queryParam("token", request.getToken())
+            .toUriString();
+
+    Map<String, Object> templateModel = new HashMap<>();
+    templateModel.put("name", request.getName());
+    templateModel.put("url", urlResetPassword);
+
+    context.setVariables(templateModel);
+
+    String subject = "Reset password";
+    String htmlBody = templateEngine.process(RESET_PASSWORD, context);
 
     jobSendMail(systemEmail, request.getEmail(), subject, htmlBody, javaMailSender);
   }

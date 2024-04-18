@@ -18,4 +18,9 @@ public class MailController {
   public void sendVerificationEmail(@RequestBody SendMailVerifyUserRequest request) {
     mailService.sendVerificationEmail(request);
   }
+
+  @PostMapping("/forgot-password")
+  public void sendResetPassword(@RequestBody SendMailVerifyUserRequest request) {
+    mailService.sendResetPassword(request);
+  }
 }
