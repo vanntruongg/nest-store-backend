@@ -15,11 +15,11 @@ public class Utils {
     return RandomStringUtils.random(length, useLetters, useNumbers);
   }
 
-  public static Token generateTokenVerify() {
+  public static Token generateToken(TokenType type) {
     String randomToken = generateRandomString();
     LocalDateTime expiredDate = LocalDateTime.now().plusDays(1);
     return Token.builder()
-            .tokenType(TokenType.VERIFICATION.getTokenType())
+            .tokenType(type.getTokenType())
             .tokenValue(randomToken)
             .expiredDate(expiredDate)
             .build();
