@@ -38,4 +38,6 @@ public class ApiEndpoint {
   public static final String UPDATE_ADDRESS = UPDATE + ADDRESS + ADDRESS_PARAM;
   public static final String ADMIN_UPDATE = ADMIN + UPDATE;
   public static final String REQUEST_VERIFY = "/request/verify";
+  public static final String FORGOT_PASSWORD = "/forgot-password";
+  public static final String RESET_PASSWORD = "/reset-password";
 }

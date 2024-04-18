@@ -9,4 +9,5 @@ public class EmailConstant {
   public static final String UTF_8 = "UTF-8";
 
   public static final String VERIFY_EMAIL = "verify-email";
+  public static final String RESET_PASSWORD = "reset-password";
 }
