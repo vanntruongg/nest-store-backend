@@ -136,6 +136,27 @@ public class OrderServiceImpl implements OrderService {
     return orderCountByMonth;
   }
 
+  @Override
+  public Double getAllRevenue() {
+    return orderRepository.getTotalPrice();
+  }
+
+  @Override
+  public Map<Integer, Double> getRevenueByMonth() {
+    Map<Integer, Double> revenueByMonth = new HashMap<>();
+
+    List<Object[]> results = orderRepository.getTotalPriceByMonth();
+    // initial the order for each month to 0
+    for (int i = 1; i <= MONTH_IN_YEAR; i++) {
+      revenueByMonth.put(i, 0.0);
+    }
+
+    for (Object[] result: results) {
+      revenueByMonth.put((Integer) result[0], (Double) result[1]);
+    }
+    return revenueByMonth;
+  }
+
 
   private OrderDto convertToOrderDto(Order order, List<OrderDetail> orderDetail) {
     return OrderDto.builder()

@@ -24,4 +24,13 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
           "where extract(year from o.createdDate) = extract(year from current_date )" +
           "group by extract(month from o.createdDate)")
   List<Object[]> countOrderByMonth();
+
+  @Query("select sum(o.totalPrice) from Order o")
+  double getTotalPrice();
+
+  @Query("select extract(month from o.createdDate), sum(o.totalPrice) " +
+          "from Order o " +
+          "where extract(year from o.createdDate) = extract(year from current_date ) " +
+          "group by extract(month from o.createdDate) ")
+  List<Object[]> getTotalPriceByMonth();
 }

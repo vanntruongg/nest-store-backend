@@ -91,7 +91,7 @@ public class OrderController {
             .build());
   }
 
-  @GetMapping("/count/month")
+  @GetMapping(COUNT_ORDER_BY_MONTH)
   public ResponseEntity<CommonResponse<Object>> getCountOrderByMonth() {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
@@ -100,4 +100,20 @@ public class OrderController {
             .build());
   }
 
+  @GetMapping(GET_ALL_REVENUE)
+  public ResponseEntity<CommonResponse<Object>> getAllRevenue() {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(orderService.getAllRevenue())
+            .build());
+  }
+  @GetMapping(GET_REVENUE_BY_MONTH)
+  public ResponseEntity<CommonResponse<Object>> getRevenueByMonth() {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(orderService.getRevenueByMonth())
+            .build());
+  }
 }
