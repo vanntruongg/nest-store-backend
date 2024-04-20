@@ -246,7 +246,7 @@ public class IdentityServiceImpl implements IdentityService {
 
   @Override
   @Transactional
-  public Boolean updateUser(UserDto userDto) {
+  public User updateUser(UserDto userDto) {
     List<String> accountRoles = securityContextHelper.getRoles();
 
     User user = getUserByEmail(userDto.getEmail());
@@ -258,11 +258,10 @@ public class IdentityServiceImpl implements IdentityService {
     user.setImageUrl(userDto.getImageUrl());
 
     // if list role not empty and account update is admin
-    if (!userDto.getRoles().isEmpty() && accountRoles.contains(UserRole.ADMIN.getRole())) {
+    if (userDto.getRoles() != null && accountRoles.contains(UserRole.ADMIN.getRole())) {
       user.setRoles(userDto.getRoles());
     }
-    repository.save(user);
-    return true;
+    return repository.save(user);
   }
 
   @Override
@@ -276,7 +275,7 @@ public class IdentityServiceImpl implements IdentityService {
       repository.save(user);
       return true;
     } else {
-      throw new OldPasswordNotMatches(ErrorCode.DENIED, MessageConstant.OLD_PASSWORD_NOT_MATCHES);
+      throw new FormException(ErrorCode.DENIED, MessageConstant.OLD_PASSWORD_NOT_MATCHES, new Throwable("oldPassword"));
     }
   }
 

@@ -24,7 +24,7 @@ public interface IdentityService {
 
   User getUserByEmail(String email);
 
-  Boolean updateUser(UserDto userDto);
+  User updateUser(UserDto userDto);
 
   Boolean changePassword(ChangePasswordRequest changePasswordRequest);
 
