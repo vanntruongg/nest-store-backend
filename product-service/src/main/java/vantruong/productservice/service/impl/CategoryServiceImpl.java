@@ -20,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
   private final CategoryRepository categoryRepository;
 
   @Override
-  public List<CategoryResponse> getTopLevelCategory() {
+  public List<CategoryResponse> getALlCategory() {
     List<Category> categories = categoryRepository.findTopLevelCategory();
     List<CategoryResponse> result = new ArrayList<>();
     for (Category category: categories) {
@@ -32,6 +32,11 @@ public class CategoryServiceImpl implements CategoryService {
       result.add(categoryResponse);
     }
     return result;
+  }
+
+  @Override
+  public List<Category> getTopLevelCategory() {
+    return categoryRepository.findTopLevelCategory();
   }
 
   @Override
@@ -66,6 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
     getAllChildrenByCategoryRecursive(categoryId, result);
     return result;
   }
+
 
   private void getAllChildrenByCategoryRecursive(int categoryId, List<CategoryResponse> result) {
     List<Category> children = getSubCategoriesByParentId(categoryId);
