@@ -16,6 +16,15 @@ public class CategoryController {
   private final CategoryService categoryService;
 
   @GetMapping(ApiEndpoint.CATEGORY)
+  private ResponseEntity<CommonResponse<Object>> getALlCategory() {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(categoryService.getALlCategory())
+            .build());
+  }
+
+  @GetMapping(ApiEndpoint.TOP_LEVEL_CATEGORY)
   private ResponseEntity<CommonResponse<Object>> getTopLevelCategory() {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
@@ -23,6 +32,7 @@ public class CategoryController {
             .data(categoryService.getTopLevelCategory())
             .build());
   }
+
 
   @GetMapping(ApiEndpoint.CATEGORY_GET_SUBCATEGORY)
   private ResponseEntity<CommonResponse<Object>> getSubCategoriesByParentId(@PathVariable("id") int parentId) {
