@@ -59,7 +59,7 @@ public class ProductController {
   }
 
   @GetMapping(PRODUCT_GET_BY_ID)
-  public ResponseEntity<CommonResponse<Object>> getProductById(@PathVariable("id") int id) {
+  public ResponseEntity<CommonResponse<Object>> getProductWithCategoryById(@PathVariable("id") int id) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
@@ -67,6 +67,14 @@ public class ProductController {
             .build());
   }
 
+  @GetMapping(PRODUCT_GET_BY_CATEGORY_ID)
+  public ResponseEntity<CommonResponse<Object>> getProductsByCategoryId(@PathVariable("id") int id, @PathVariable("limit") int limit) {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(productService.getProductsByCategoryId(id, limit))
+            .build());
+  }
   @GetMapping(PRODUCT_GET_STOCK_BY_ID)
   public ResponseEntity<CommonResponse<Object>> getStockById(@PathVariable("id") int id) {
     return ResponseEntity.ok().body(CommonResponse.builder()

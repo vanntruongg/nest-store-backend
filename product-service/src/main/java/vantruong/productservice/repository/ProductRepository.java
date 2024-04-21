@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer>, PagingAndSortingRepository<Product, Integer>, JpaSpecificationExecutor<Product> {
   @Query("select p from Product p where p.category.id = :id")
-  List<Product> findAllByCategoryId(int id);
+  List<Product> findAllByCategoryId(int id, Limit limit);
 
   @Query(value = "WITH RECURSIVE category_tree AS ( " +
           "    SELECT cat_id, parent_cat_id, cat_name " +

@@ -196,4 +196,9 @@ public class ProductServiceImpl implements ProductService {
   public Long getProductCount() {
     return productRepository.getProductCount();
   }
+
+  @Override
+  public List<Product> getProductsByCategoryId(int id, int limit) {
+    return productRepository.findAllByCategoryId(id, Limit.of(limit));
+  }
 }

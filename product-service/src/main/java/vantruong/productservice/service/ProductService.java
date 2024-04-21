@@ -32,4 +32,6 @@ public interface ProductService {
   List<Product> getAll();
 
   Long getProductCount();
+
+  List<Product> getProductsByCategoryId(int id, int limit);
 }
