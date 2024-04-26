@@ -100,20 +100,30 @@ public class OrderController {
             .build());
   }
 
-  @GetMapping(GET_ALL_REVENUE)
-  public ResponseEntity<CommonResponse<Object>> getAllRevenue() {
+  @GetMapping(GET_REVENUE_BY_YEAR)
+  public ResponseEntity<CommonResponse<Object>> getYearlyRevenueTotal(@PathVariable("year") int year) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
-            .data(orderService.getAllRevenue())
+            .data(orderService.getYearlyRevenueTotal(year))
             .build());
   }
-  @GetMapping(GET_REVENUE_BY_MONTH)
-  public ResponseEntity<CommonResponse<Object>> getRevenueByMonth() {
+
+  @GetMapping(GET_REVENUE_BY_MONTH_IN_YEAR)
+  public ResponseEntity<CommonResponse<Object>> getMonthlyRevenueByYear(@PathVariable("year") int year, @PathVariable("month") int month) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
-            .data(orderService.getRevenueByMonth())
+            .data(orderService.getMonthlyRevenueByYear(year, month))
             .build());
   }
+
+//  @GetMapping(GET_REVENUE_BY_MONTH_IN_YEAR)
+//  public ResponseEntity<CommonResponse<Object>> getRevenueByMonth(@PathVariable) {
+//    return ResponseEntity.ok().body(CommonResponse.builder()
+//            .isSuccess(true)
+//            .message(MessageConstant.FIND_SUCCESS)
+//            .data(orderService.getRevenueByMonth())
+//            .build());
+//  }
 }

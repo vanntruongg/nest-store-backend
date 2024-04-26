@@ -17,7 +17,9 @@ import orderservice.service.PaymentMethodService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
   private final PaymentMethodService paymentMethodService;
 
   private static final int MONTH_IN_YEAR = 12;
+
   @Override
   public List<OrderDto> getAllOrder() {
     List<Order> orders = orderRepository.findAll();
@@ -137,11 +140,44 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
+  public Map<Integer, Double> getYearlyRevenueTotal(int year) {
+    Map<Integer, Double> yearlyRevenueTotal = new LinkedHashMap<>();
+    // from JAN to DEC
+    for (int i = 1; i <= 12; i++) {
+      yearlyRevenueTotal.put(i, 0.0);
+    }
+    List<Object[]> results = orderRepository.getTotalPriceByYear(year);
+    for (Object[] result : results) {
+      yearlyRevenueTotal.put((Integer) result[0], (Double) result[1]);
+    }
+    return yearlyRevenueTotal;
+  }
+
+  @Override
+  public Map<Integer, Double> getMonthlyRevenueByYear(int year, int month) {
+    Map<Integer, Double> monthlyRevenueByYear = new LinkedHashMap<>();
+    List<Object[]> results = orderRepository.getTotalPriceByMonthInYear(year, month);
+
+    // from JAN to the number of month
+    for (int i = 1; i <= LocalDate.of(year, month, 1).lengthOfMonth(); i++) {
+      monthlyRevenueByYear.put(i, 0.0);
+    }
+    for (Object[] result : results) {
+      monthlyRevenueByYear.put((Integer) result[0], (Double) result[1]);
+    }
+    return monthlyRevenueByYear;
+  }
+
+  private void initializeInitialRevenueValues(Map<Integer, Double> map, int start, int end) {
+    for (int i = start; i <= end; i++) {
+      map.put(i, 0.0);
+    }
+  }
+
   public Double getAllRevenue() {
     return orderRepository.getTotalPrice();
   }
 
-  @Override
   public Map<Integer, Double> getRevenueByMonth() {
     Map<Integer, Double> revenueByMonth = new HashMap<>();
 
@@ -151,7 +187,7 @@ public class OrderServiceImpl implements OrderService {
       revenueByMonth.put(i, 0.0);
     }
 
-    for (Object[] result: results) {
+    for (Object[] result : results) {
       revenueByMonth.put((Integer) result[0], (Double) result[1]);
     }
     return revenueByMonth;
