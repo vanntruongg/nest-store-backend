@@ -1,6 +1,7 @@
 package vantruong.productservice.service;
 
 import vantruong.productservice.entity.Category;
+import vantruong.productservice.entity.dto.CategoryDto;
 import vantruong.productservice.entity.dto.CategoryResponse;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface CategoryService {
   List<CategoryResponse> getAllLevelChildrenByCategory(int categoryId);
 
   List<Category> getTopLevelCategory();
+
+  Category createCategory(CategoryDto categoryDto);
 }

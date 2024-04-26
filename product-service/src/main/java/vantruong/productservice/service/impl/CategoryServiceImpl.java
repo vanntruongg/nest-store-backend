@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vantruong.productservice.constant.MessageConstant;
 import vantruong.productservice.entity.Category;
+import vantruong.productservice.entity.dto.CategoryDto;
 import vantruong.productservice.entity.dto.CategoryResponse;
 import vantruong.productservice.exception.ErrorCode;
 import vantruong.productservice.exception.NotFoundException;
@@ -18,6 +19,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
   private final CategoryRepository categoryRepository;
+
+  @Override
+  public Category createCategory(CategoryDto categoryDto) {
+    Category category = Category.builder()
+            .name(categoryDto.getName())
+            .image(categoryDto.getImage())
+            .parentCategory(categoryDto.getParentCategory())
+            .build();
+    return categoryRepository.save(category);
+  }
 
   @Override
   public List<CategoryResponse> getALlCategory() {
