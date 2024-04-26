@@ -18,5 +18,4 @@ public class Item {
   private String category;
   private String imageUrl;
 
-
 }

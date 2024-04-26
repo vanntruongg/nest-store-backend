@@ -27,6 +27,7 @@ public class MessageConstant {
   public static final String PRODUCT_NOT_FOUND = String.format(CHAR_SEQUENCE_2, PRODUCT, NOT_FOUND);
   public static final String CATEGORY_NOT_FOUND = String.format(CHAR_SEQUENCE_2, CATEGORY, NOT_FOUND);
   public static final String CREATE_PRODUCT_SUCCESS = String.format(CHAR_SEQUENCE_3, CREATE, PRODUCT, SUCCESS);
+  public static final String CREATE_CATEGORY_SUCCESS = String.format(CHAR_SEQUENCE_3, CREATE, CATEGORY, SUCCESS);
   public static final String INSUFFICIENT_PRODUCT_QUANTITY = "Số lượng sản phẩm trong kho không đủ!";
   public static final String UPDATE_QUANTITY_SUCCESS = "Cập nhật số lượng sản phẩm thành công.";
   public static final String UPDATE_SUCCESS = String.format(CHAR_SEQUENCE_2, UPDATE, SUCCESS);
