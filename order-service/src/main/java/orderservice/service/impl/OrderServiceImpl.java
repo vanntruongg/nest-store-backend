@@ -112,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
     List<Object[]> results = orderRepository.findOrderCountByStatus();
     Map<String, Long> orderCountByStatus = new HashMap<>();
     for (Object[] result : results) {
-      orderCountByStatus.put(((OrderStatus) result[0]).getOrderStatus(), (Long) result[1]);
+      orderCountByStatus.put(result[0].toString(), (Long) result[1]);
     }
     return orderCountByStatus;
   }
@@ -168,31 +168,10 @@ public class OrderServiceImpl implements OrderService {
     return monthlyRevenueByYear;
   }
 
-  private void initializeInitialRevenueValues(Map<Integer, Double> map, int start, int end) {
-    for (int i = start; i <= end; i++) {
-      map.put(i, 0.0);
-    }
-  }
 
   public Double getAllRevenue() {
     return orderRepository.getTotalPrice();
   }
-
-  public Map<Integer, Double> getRevenueByMonth() {
-    Map<Integer, Double> revenueByMonth = new HashMap<>();
-
-    List<Object[]> results = orderRepository.getTotalPriceByMonth();
-    // initial the order for each month to 0
-    for (int i = 1; i <= MONTH_IN_YEAR; i++) {
-      revenueByMonth.put(i, 0.0);
-    }
-
-    for (Object[] result : results) {
-      revenueByMonth.put((Integer) result[0], (Double) result[1]);
-    }
-    return revenueByMonth;
-  }
-
 
   private OrderDto convertToOrderDto(Order order, List<OrderDetail> orderDetail) {
     return OrderDto.builder()
@@ -203,7 +182,7 @@ public class OrderServiceImpl implements OrderService {
             .address(order.getAddress())
             .notes(order.getNotes())
             .totalPrice(order.getTotalPrice())
-            .orderStatus(order.getOrderStatus().getName())
+            .orderStatus(order.getOrderStatus().name())
             .paymentMethod(order.getPaymentMethod().getMethod())
             .orderDetail(orderDetail)
             .build();
