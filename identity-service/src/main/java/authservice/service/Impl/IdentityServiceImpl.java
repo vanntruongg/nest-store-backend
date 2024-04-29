@@ -1,5 +1,6 @@
 package authservice.service.Impl;
 
+import authservice.client.MailClient;
 import authservice.common.Utils;
 import authservice.constant.CommonConstant;
 import authservice.constant.MessageConstant;
@@ -46,8 +47,7 @@ public class IdentityServiceImpl implements IdentityService {
   private final AuthenticationManager authenticationManager;
   private final UserDetailsServiceImpl userDetailsService;
   private final SecurityContextHelper securityContextHelper;
-  //  private final MailClient mailClient;
-  private final RestTemplate restTemplate;
+  private final MailClient mailClient;
 
 
   @Override
@@ -97,7 +97,7 @@ public class IdentityServiceImpl implements IdentityService {
               .build();
 
       repository.save(newUser);
-      sendVerificationEmail(newUser, tokenVerifyUser.getTokenValue());
+      mailClient.sendVerificationEmail(newUser, tokenVerifyUser.getTokenValue());
       return true;
     } catch (DuplicationException ex) {
       log.error("Error during user registration: {}", ex.getMessage(), ex);
@@ -106,31 +106,11 @@ public class IdentityServiceImpl implements IdentityService {
   }
 
   @Override
-  public void sendVerificationEmail(User user, String token) {
-    SendMailVerifyUserRequest request = SendMailVerifyUserRequest.builder()
-            .email(user.getEmail())
-            .name(user.getFirstName())
-            .token(token)
-            .build();
-    restTemplate.postForLocation(CommonConstant.EMAIL_URL + "/mail/verify", request);
-  }
-
-  @Override
-  public void sendForgotPassword(User user, String token) {
-    SendMailVerifyUserRequest request = SendMailVerifyUserRequest.builder()
-            .email(user.getEmail())
-            .name(user.getFirstName())
-            .token(token)
-            .build();
-    restTemplate.postForLocation(CommonConstant.EMAIL_URL + "/mail/forgot-password", request);
-  }
-
-  @Override
   public Boolean requestVerifyAccount(String email) {
     Token token = Utils.generateToken(TokenType.VERIFICATION);
     User user = getUserByEmail(email);
     user.setTokens(List.of(token));
-    sendVerificationEmail(user, token.getTokenValue());
+    mailClient.sendVerificationEmail(user, token.getTokenValue());
     repository.save(user);
     return true;
   }
@@ -144,7 +124,7 @@ public class IdentityServiceImpl implements IdentityService {
     tokens.add(token);
 
     user.setTokens(tokens);
-    sendForgotPassword(user, token.getTokenValue());
+    mailClient.sendForgotPassword(user, token.getTokenValue());
     repository.save(user);
     return true;
   }
@@ -183,6 +163,18 @@ public class IdentityServiceImpl implements IdentityService {
     user.setTokens(tokens);
     repository.save(user);
     return true;
+  }
+
+  @Override
+  public UserDto getCurrentUser() {
+    var userDetails = securityContextHelper.getUserDetails();
+    return UserDto.builder()
+            .email(userDetails.getUsername())
+            .firstName(userDetails.getUser().getFirstName())
+            .lastName(userDetails.getUser().getLastName())
+            .phone(userDetails.getUser().getPhone())
+            .address(userDetails.getUser().getAddress())
+            .build();
   }
 
   @Override

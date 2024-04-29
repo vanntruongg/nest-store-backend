@@ -177,4 +177,13 @@ public class IdentityController {
             .data(identityService.getUserCount())
             .build());
   }
+
+  @GetMapping("/get/current-user")
+  public ResponseEntity<CommonResponse<Object>> getCurrentUser() {
+    return ResponseEntity.ok().body(CommonResponse.builder()
+            .isSuccess(true)
+            .message(MessageConstant.FIND_SUCCESS)
+            .data(identityService.getCurrentUser())
+            .build());
+  }
 }
