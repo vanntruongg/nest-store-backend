@@ -117,7 +117,7 @@
     <div class="order-details">
         <div>
             <h3 class="subtitle">Thông tin đơn hàng</h3>
-            <p><strong>Mã đơn hàng:</strong></strong> <span th:text="${order.orderId}"></span></p>
+            <p><strong>Mã đơn hàng:</strong> <span th:text="${order.orderId}"></span></p>
             <p><strong>Tổng tiền: </strong><span th:text="${#numbers.formatDecimal(order.totalPrice, 3, 'COMMA', 0, 'POINT')} + '₫'"></span></p>
             <p><strong>Trạng thái đơn hàng: </strong> <span th:text="${order.orderStatus}"></span></p>
         </div>
