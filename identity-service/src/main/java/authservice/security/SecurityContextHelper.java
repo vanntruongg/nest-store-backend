@@ -11,7 +11,7 @@ import java.util.List;
 @Component(value = "securityContextHelper")
 public class SecurityContextHelper {
 
-  private UserDetailsImpl getUserDetails() {
+  public UserDetailsImpl getUserDetails() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
       return (UserDetailsImpl) authentication.getPrincipal();
