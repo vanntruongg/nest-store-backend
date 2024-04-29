@@ -2,7 +2,9 @@ package mailservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import mailservice.constant.CommonConstant;
+import mailservice.dto.OrderDto;
 import mailservice.dto.UserDto;
+import mailservice.client.UserClient;
 import mailservice.job.SendMailJob;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,14 +18,14 @@ import mailservice.service.MailService;
 import java.util.HashMap;
 import java.util.Map;
 
-import static mailservice.constant.EmailConstant.RESET_PASSWORD;
-import static mailservice.constant.EmailConstant.VERIFY_EMAIL;
+import static mailservice.constant.EmailConstant.*;
 
 @Service
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
   private final TemplateEngine templateEngine;
   private final JavaMailSender javaMailSender;
+  private final UserClient userClient;
 
   @Value("${spring.mail.username}")
   private String systemEmail;
@@ -75,6 +77,20 @@ public class MailServiceImpl implements MailService {
     String htmlBody = templateEngine.process(RESET_PASSWORD, context);
 
     jobSendMail(systemEmail, request.getEmail(), subject, htmlBody, javaMailSender);
+  }
+
+  @Override
+  public void confirmOrder(OrderDto orderDto) {
+    Context context = new Context();
+
+    Map<String, Object> templateModel = new HashMap<>();
+    templateModel.put("order", orderDto);
+    context.setVariables(templateModel);
+
+    String subject = "Xác nhận đơn đặt hàng";
+    String htmlBody = templateEngine.process(CONFIRM_ORDER, context);
+
+    jobSendMail(systemEmail, orderDto.getEmail(), subject, htmlBody, javaMailSender);
   }
 
 }

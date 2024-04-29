@@ -1,6 +1,7 @@
 package mailservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import mailservice.dto.OrderDto;
 import mailservice.service.MailService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,5 +23,10 @@ public class MailController {
   @PostMapping("/forgot-password")
   public void sendResetPassword(@RequestBody SendMailVerifyUserRequest request) {
     mailService.sendResetPassword(request);
+  }
+
+  @PostMapping("/confirm-order")
+  public void confirmOrder(@RequestBody OrderDto orderDto) {
+    mailService.confirmOrder(orderDto);
   }
 }
