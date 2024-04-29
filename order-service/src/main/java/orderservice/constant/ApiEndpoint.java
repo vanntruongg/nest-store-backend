@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 public class ApiEndpoint {
   public static final String PRODUCT_SERVICE_URL = "http://localhost:9002";
   public static final String CART_SERVICE_URL = "http://localhost:9004";
+  public static final String MAIL_SERVICE_URL = "http://localhost:9003";
   //  params
   public static final String ID_PARAM = "/{id}";
   public static final String EMAIL = "/email";

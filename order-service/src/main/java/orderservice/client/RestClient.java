@@ -3,7 +3,11 @@ package orderservice.client;
 import lombok.RequiredArgsConstructor;
 import orderservice.common.CommonResponse;
 import orderservice.constant.ApiEndpoint;
+import orderservice.entity.PaymentMethod;
 import orderservice.entity.dto.OrderDetailDto;
+import orderservice.entity.dto.OrderDto;
+import orderservice.entity.dto.OrderRequest;
+import orderservice.enums.OrderStatus;
 import orderservice.exception.ErrorCode;
 import orderservice.exception.InsufficientProductQuantityException;
 import org.jetbrains.annotations.NotNull;
@@ -24,13 +28,21 @@ public class RestClient {
   private final RestTemplate restTemplate;
 
   public void updateProductQuantity(Map<Integer, Integer> stockUpdate) {
-    String url = ApiEndpoint.PRODUCT_SERVICE_URL + "/update-quantity-order";
 
+    String url = ApiEndpoint.PRODUCT_SERVICE_URL + "/update-quantity-order";
+    HttpHeaders headers = new HttpHeaders();
+    HttpEntity<Map<Integer, Integer>> requestEntity = new HttpEntity<>(stockUpdate, headers);
     try {
-      ResponseEntity<Object> response = restTemplate.postForEntity(url, stockUpdate, Object.class);
-      if (response.getBody() != null && response.getBody() instanceof CommonResponse<?> commonResponse) {
-        if (!commonResponse.isSuccess()) {
-          throw new InsufficientProductQuantityException(ErrorCode.UNPROCESSABLE_ENTITY, commonResponse.getMessage());
+      ResponseEntity<CommonResponse<Object>> response = restTemplate.exchange(
+              url,
+              HttpMethod.POST,
+              requestEntity,
+              new ParameterizedTypeReference<>() {
+              }
+      );
+      if (response.getBody() != null) {
+        if (!response.getBody().isSuccess()) {
+          throw new InsufficientProductQuantityException(ErrorCode.UNPROCESSABLE_ENTITY, response.getBody().getMessage());
         }
       }
     } catch (InsufficientProductQuantityException exception) {
@@ -52,5 +64,11 @@ public class RestClient {
             new ParameterizedTypeReference<CommonResponse<Object>>() {
             }
     );
+  }
+
+  public void sendMailConfirmOrder(OrderDto request) {
+    String url = ApiEndpoint.MAIL_SERVICE_URL + "/mail/confirm-order";
+    request.setOrderStatus(OrderStatus.findOrderStatus(request.getOrderStatus()).getName());
+    restTemplate.postForLocation(url, request);
   }
 }
