@@ -1,4 +1,4 @@
-package orderservice.entity.dto;
+package mailservice.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,14 +8,16 @@ import java.util.List;
 
 @Getter
 @Setter
-public class OrderRequest {
+@Builder
+public class OrderDto {
   private int orderId;
   private String email;
   private String name;
   private String phone;
   private String address;
-  private float totalPrice;
   private String notes;
-  private int paymentMethodId;
-  private List<OrderDetailDto> listProduct;
+  private double totalPrice;
+  private String orderStatus;
+  private String paymentMethod;
+  private List<OrderDetailDto> orderDetail;
 }

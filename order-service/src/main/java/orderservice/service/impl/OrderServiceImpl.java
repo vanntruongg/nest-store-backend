@@ -1,6 +1,7 @@
 package orderservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import orderservice.client.RestClient;
 import orderservice.constant.MessageConstant;
 import orderservice.entity.Order;
 import orderservice.entity.OrderDetail;
@@ -29,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
   private final OrderRepository orderRepository;
   private final OrderDetailService orderDetailService;
   private final PaymentMethodService paymentMethodService;
-
+  private final RestClient restClient;
   private static final int MONTH_IN_YEAR = 12;
 
   @Override
@@ -57,9 +58,9 @@ public class OrderServiceImpl implements OrderService {
             .orderStatus(OrderStatus.PENDING_CONFIRM)
             .paymentMethod(paymentMethod)
             .build();
-    orderRepository.save(newOrder);
-    orderDetailService.createOrderDetails(newOrder, orderRequest.getListProduct());
-
+    Order savedOrder = orderRepository.save(newOrder);
+    List<OrderDetail> orderDetails = orderDetailService.createOrderDetails(newOrder, orderRequest.getListProduct());
+    restClient.sendMailConfirmOrder(convertToOrderDto(savedOrder, orderDetails));
     return orderRequest;
   }
 

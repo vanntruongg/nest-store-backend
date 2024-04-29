@@ -33,7 +33,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
   @Override
   @Transactional
-  public void createOrderDetails(Order order, List<OrderDetailDto> orderDetailDTOs) {
+  public List<OrderDetail> createOrderDetails(Order order, List<OrderDetailDto> orderDetailDTOs) {
     List<OrderDetail> orderDetails = new ArrayList<>();
     Map<Integer, Integer> stockUpdate = new HashMap<>();
     orderDetailDTOs.forEach(orderDetailDto -> {
@@ -49,6 +49,8 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 
 //  call the cart service to remove items from the cart
     restClient.removeItemsFromCart(order.getEmail(), orderDetailDTOs);
+
+    return orderDetails;
   }
 
   @Override
