@@ -146,8 +146,7 @@ public class ProductServiceImpl implements ProductService {
 
   @Override
   @Transactional
-  public CommonResponse<Object> updateProductQuantityByOrder(Map<Integer, Integer> stockUpdate) {
-    List<String> errorMessages = new ArrayList<>();
+  public Boolean updateProductQuantityByOrder(Map<Integer, Integer> stockUpdate) {
     List<Product> products = new ArrayList<>();
     for (Map.Entry<Integer, Integer> productIdAndQuantity : stockUpdate.entrySet()) {
       int productId = productIdAndQuantity.getKey();
@@ -156,25 +155,16 @@ public class ProductServiceImpl implements ProductService {
       Product product = getProductById(productId);
       int newQuantity = product.getStock() - quantity;
       if (newQuantity < 0) {
-        errorMessages.add("Insufficient quantity for product with Id: " + productId);
+        return false;
       } else {
         product.setStock(newQuantity);
         products.add(product);
       }
       productRepository.saveAll(products);
     }
+    return true;
 
-    if (!errorMessages.isEmpty()) {
-      return CommonResponse.builder()
-              .isSuccess(false)
-              .message(Utils.formatErrorMessage(errorMessages))
-              .build();
-    }
 
-    return CommonResponse.builder()
-            .isSuccess(true)
-            .message(MessageConstant.UPDATE_QUANTITY_SUCCESS)
-            .build();
   }
 
   @Override

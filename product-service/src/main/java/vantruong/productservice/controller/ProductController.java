@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import vantruong.productservice.common.CommonResponse;
 import vantruong.productservice.constant.MessageConstant;
 import vantruong.productservice.entity.dto.ProductDto;
+import vantruong.productservice.exception.ErrorCode;
 import vantruong.productservice.service.ProductService;
 
 import java.util.Map;
@@ -85,12 +86,18 @@ public class ProductController {
   }
 
   @PostMapping("/update-quantity-order")
-  public ResponseEntity<CommonResponse<Object>> updateProductQuantityByOrder(@RequestBody Map<Integer, Integer> stockUpdate) {
-    return ResponseEntity.ok().body(CommonResponse.builder()
-            .isSuccess(true)
-            .message(MessageConstant.FIND_SUCCESS)
-            .data(productService.updateProductQuantityByOrder(stockUpdate))
-            .build());
+  public ResponseEntity<Object> updateProductQuantityByOrder(@RequestBody Map<Integer, Integer> stockUpdate) {
+    if(!productService.updateProductQuantityByOrder(stockUpdate)) {
+      return ResponseEntity.ok().body(CommonResponse.builder()
+              .isSuccess(false)
+              .message(MessageConstant.INSUFFICIENT_PRODUCT_QUANTITY)
+              .build());
+    } else {
+      return ResponseEntity.ok().body(CommonResponse.builder()
+              .isSuccess(true)
+              .message(MessageConstant.UPDATE_QUANTITY_SUCCESS)
+              .build());
+    }
   }
 
   @GetMapping(PRODUCT_GET_BY_NAME)
