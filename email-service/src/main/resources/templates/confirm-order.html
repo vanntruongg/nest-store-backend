@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác nhận đơn hàng</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Nunito, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #805ad5;
+        }
+
+        .order-details {
+            margin-bottom: 20px;
+        }
+
+        .order-details h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .order-details p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #555;
+            display: flex;
+
+        }
+        .order-details p strong {
+            margin-right: 4px;
+        }
+
+        .order-items {
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            display: flex;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+        }
+
+        .product-info {
+            flex-grow: 1;
+        }
+
+        .product-name {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            color: #555;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .subtitle {
+            text-transform: uppercase;
+            color: #cccccc;
+            font-weight: 700;
+        }
+
+        .section-links {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #cccccc;
+            padding-bottom: 20px;
+
+        }
+        .section-links a {
+            text-decoration: none;
+            color: #cccccc;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Xác nhận đơn hàng</h1>
+    </div>
+    <div class="order-details">
+        <div>
+            <h3 class="subtitle">Thông tin đơn hàng</h3>
+            <p><strong>Mã đơn hàng:</strong></strong> <span th:text="${order.orderId}"></span></p>
+            <p><strong>Tổng tiền: </strong><span th:text="${#numbers.formatDecimal(order.totalPrice, 3, 'COMMA', 0, 'POINT')} + '₫'"></span></p>
+            <p><strong>Trạng thái đơn hàng: </strong> <span th:text="${order.orderStatus}"></span></p>
+        </div>
+        <div>
+            <h3 class="subtitle">Thông tin giao hàng</h3>
+            <p><strong>Họ Tên: </strong> <span th:text="${order.name}"></span></p>
+            <p><strong>Số điện thoại: </strong> <span th:text="${order.phone}"></span></p>
+            <p><strong>Địa chỉ: </strong> <span th:text="${order.address}"></span></p>
+            <p><strong>Ghi chú: </strong> <span th:text="${order.notes}"></span></p>
+        </div>
+    </div>
+    <h3 class="subtitle">Thông tin thanh toán</h3>
+    <p><strong>Phương thức thanh toán:</strong> <span th:text="${order.paymentMethod}"></span></p>
+    <div class="order-items">
+        <h2>Sản phẩm đã đặt</h2>
+        <div th:each="item : ${order.orderDetail}">
+            <div class="order-item">
+                <img th:src="${item.productImage}" alt="Product Image" class="product-image">
+                <div class="product-info">
+                    <p class="product-name" th:text="${item.productName}"></p>
+                    <p class="product-price"><span th:text="${item.productPrice}"></span> x <span
+                            th:text="${item.quantity}"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section-links">
+        <a href="http://localhost:3000" target="_blank">NEST STORE</a>
+        <a href="http://localhost:3000/shop" target="_blank">Cửa hàng</a>
+        <a href="http://localhost:3000/contact" target="_blank">Liên hệ</a>
+    </div>
+    <div class="footer">
+        <p>Nếu có bất kỳ câu hỏi nào về đơn hàng của bạn, Vui lòng liên hệ với chúng tôi theo địa chỉ email vantruong.ct263ctu@gmail.com.</p>
+    </div>
+</div>
+</body>
+</html>
