@@ -25,9 +25,9 @@ public interface OrderService {
 
   Map<Integer, Integer> getCountOrderByMonth();
 
-  Map<Integer, Double> getYearlyRevenueTotal(int year);
-
-  Map<Integer, Double> getMonthlyRevenueByYear(int year, int month);
-
   Double getAllRevenue();
+
+  Map<Integer, Double> getRevenue(Integer year, Integer month);
+
+  Map<Integer, Long> statisticOrder(Integer year, Integer month);
 }

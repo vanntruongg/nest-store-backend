@@ -31,18 +31,16 @@ public class ApiEndpoint {
   public static final String GET_URL_PAYMENT = "/get-link-payment";
   public static final String UPDATE = "/update";
   public static final String TOTAL = "/total";
+  public static final String STATISTIC = "/statistic";
   public static final String GET_TOTAL_ORDER = "/total-order";
-  public static final String GET_REVENUE_BY_YEAR = GET + REVENUE + YEAR + YEAR_PARAM;
-  public static final String GET_REVENUE_BY_MONTH_IN_YEAR = GET_REVENUE_BY_YEAR + MONTH + MONTH_PARAM;
+  public static final String STATISTIC_REVENUE = REVENUE + STATISTIC;
+  public static final String STATISTIC_ORDER = ORDER + STATISTIC;
   public static final String CREATE_ORDER = CREATE;
-  public static final String GET_TOTAL_REVENUE_BY_YEAR = GET + TOTAL + REVENUE + YEAR + YEAR_PARAM;
   public static final String GET_BY_EMAIL = GET + EMAIL;
   public static final String GET_BY_STATUS = GET + STATUS;
   public static final String GET_BY_EMAIL_AND_STATUS = GET + EMAIL + STATUS;
   public static final String GET_BY_ID = GET + ID_PARAM;
   public static final String UPDATE_STATUS = UPDATE + STATUS;
   public static final String COUNT_ORDER_BY_MONTH = COUNT + MONTH;
-  public static final String GET_ALL_REVENUE = GET + REVENUE;
-  public static final String GET_REVENUE_BY_MONTH = GET + REVENUE + MONTH;
 
 }

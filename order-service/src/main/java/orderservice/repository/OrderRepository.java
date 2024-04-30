@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import orderservice.entity.Order;
 
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
@@ -39,13 +40,25 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
           "from Order o " +
           "where extract(year from o.createdDate) = :year " +
           "group by extract(month from o.createdDate) ")
-  List<Object[]> getTotalPriceByYear(int year);
+  Set<Object[]> getTotalPriceByYear(int year);
 
   @Query("select extract(day from o.createdDate), sum(o.totalPrice) " +
           "from Order o " +
           "where extract(year from o.createdDate) = :year " +
           "and extract(month from o.createdDate) = :month " +
           "group by extract(day from o.createdDate) ")
-  List<Object[]> getTotalPriceByMonthInYear(int year, int month);
+  Set<Object[]> getTotalPriceByMonthInYear(int year, int month);
 
+  @Query("select extract(day from o.createdDate), count (o) " +
+          "from Order o " +
+          "where extract(year from o.createdDate) = :year " +
+          "and extract(month from o.createdDate) = :month " +
+          "group by extract(day from o.createdDate) ")
+  Set<Object[]> getTotalOrderByMonthInYear(Integer year, Integer month);
+
+  @Query("select extract(month from o.createdDate), count(o) " +
+          "from Order o " +
+          "where extract(year from o.createdDate) = :year " +
+          "group by extract(month from o.createdDate) ")
+  Set<Object[]> getTotalOrderByYear(Integer year);
 }

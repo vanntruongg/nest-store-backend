@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -136,43 +133,58 @@ public class OrderServiceImpl implements OrderService {
       // update the order count for the corresponding month in the map
       orderCountByMonth.put(month, count);
     }
-
     return orderCountByMonth;
   }
 
   @Override
-  public Map<Integer, Double> getYearlyRevenueTotal(int year) {
-    Map<Integer, Double> yearlyRevenueTotal = new LinkedHashMap<>();
-    // from JAN to DEC
-    for (int i = 1; i <= 12; i++) {
-      yearlyRevenueTotal.put(i, 0.0);
+  public Map<Integer, Double> getRevenue(Integer year, Integer month) {
+    Map<Integer, Double> revenue = new LinkedHashMap<>();
+
+    initializeRevenueMap(revenue, year, month, 0.0);
+
+    Set<Object[]> results = !Objects.isNull(month)
+            ? orderRepository.getTotalPriceByMonthInYear(year, month)
+            : orderRepository.getTotalPriceByYear(year);
+
+    if (!results.isEmpty()) {
+      for (Object[] result : results) {
+        revenue.put((Integer) result[0], (Double) result[1]);
+      }
     }
-    List<Object[]> results = orderRepository.getTotalPriceByYear(year);
-    for (Object[] result : results) {
-      yearlyRevenueTotal.put((Integer) result[0], (Double) result[1]);
-    }
-    return yearlyRevenueTotal;
+    return revenue;
   }
 
   @Override
-  public Map<Integer, Double> getMonthlyRevenueByYear(int year, int month) {
-    Map<Integer, Double> monthlyRevenueByYear = new LinkedHashMap<>();
-    List<Object[]> results = orderRepository.getTotalPriceByMonthInYear(year, month);
+  public Map<Integer, Long> statisticOrder(Integer year, Integer month) {
+    Map<Integer, Long> totalOrder = new LinkedHashMap<>();
 
-    // from JAN to the number of month
-    for (int i = 1; i <= LocalDate.of(year, month, 1).lengthOfMonth(); i++) {
-      monthlyRevenueByYear.put(i, 0.0);
+    initializeRevenueMap(totalOrder, year, month, 0L);
+
+    Set<Object[]> results = !Objects.isNull(month)
+            ? orderRepository.getTotalOrderByMonthInYear(year, month)
+            : orderRepository.getTotalOrderByYear(year);
+
+    if (!results.isEmpty()) {
+      for (Object[] result : results) {
+        totalOrder.put((Integer) result[0], (Long) result[1]);
+      }
     }
-    for (Object[] result : results) {
-      monthlyRevenueByYear.put((Integer) result[0], (Double) result[1]);
-    }
-    return monthlyRevenueByYear;
+    return totalOrder;
   }
 
+
+  // Method to initialize revenue map with default values
+  private <T extends Number> void initializeRevenueMap(Map<Integer, T> revenue, Integer year, Integer month, T defaultValue) {
+    int numMonths = (Objects.isNull(month)) ? MONTH_IN_YEAR : LocalDate.of(year, month, 1).lengthOfMonth();
+    for (int i = 1; i <= numMonths; i++) {
+      revenue.put(i, defaultValue);
+    }
+  }
 
   public Double getAllRevenue() {
     return orderRepository.getTotalPrice();
   }
+
 
   private OrderDto convertToOrderDto(Order order, List<OrderDetail> orderDetail) {
     return OrderDto.builder()

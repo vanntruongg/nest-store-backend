@@ -100,30 +100,22 @@ public class OrderController {
             .build());
   }
 
-  @GetMapping(GET_REVENUE_BY_YEAR)
-  public ResponseEntity<CommonResponse<Object>> getYearlyRevenueTotal(@PathVariable("year") int year) {
+  @GetMapping(STATISTIC_REVENUE)
+  public ResponseEntity<CommonResponse<Object>> getRevenue(@RequestParam("year") Integer year, @RequestParam(value = "month", required = false) Integer month) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
-            .data(orderService.getYearlyRevenueTotal(year))
+            .data(orderService.getRevenue(year, month))
             .build());
   }
 
-  @GetMapping(GET_REVENUE_BY_MONTH_IN_YEAR)
-  public ResponseEntity<CommonResponse<Object>> getMonthlyRevenueByYear(@PathVariable("year") int year, @PathVariable("month") int month) {
+  @GetMapping(STATISTIC_ORDER)
+  public ResponseEntity<CommonResponse<Object>> statisticOrder(@RequestParam("year") Integer year, @RequestParam(value = "month", required = false) Integer month) {
     return ResponseEntity.ok().body(CommonResponse.builder()
             .isSuccess(true)
             .message(MessageConstant.FIND_SUCCESS)
-            .data(orderService.getMonthlyRevenueByYear(year, month))
+            .data(orderService.statisticOrder(year, month))
             .build());
   }
 
-//  @GetMapping(GET_REVENUE_BY_MONTH_IN_YEAR)
-//  public ResponseEntity<CommonResponse<Object>> getRevenueByMonth(@PathVariable) {
-//    return ResponseEntity.ok().body(CommonResponse.builder()
-//            .isSuccess(true)
-//            .message(MessageConstant.FIND_SUCCESS)
-//            .data(orderService.getRevenueByMonth())
-//            .build());
-//  }
 }
